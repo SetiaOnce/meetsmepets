@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
@@ -16,9 +17,9 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        if ($role == 'silab-administrator' && session()->get('key_level') != 'silab-administrator' ) {
+        if ($role == 1 && Auth::user()->is_admin != 1 ) {
             return redirect('/login'); 
-        }else if ($role == 'silab-kepala-unit-laboratorium' && session()->get('key_level') != 'silab-kepala-unit-laboratorium' ) {
+        }else if ($role == 0 && Auth::user()->is_admin != 0 ) {
             return redirect('/login'); 
         }else{
             return $next($request);

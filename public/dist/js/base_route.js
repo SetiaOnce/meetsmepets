@@ -1,2 +1,3 @@
 "use strict";
-var base_url = window.location.origin+'/';
+
+const base_url = window.location.origin+'/';

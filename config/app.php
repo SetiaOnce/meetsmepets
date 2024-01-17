@@ -192,6 +192,7 @@ return [
         Milon\Barcode\BarcodeServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         /*
          * Application Service Providers...
          */

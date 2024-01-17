@@ -5,12 +5,20 @@ use App\Models\LogActivities;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use DateTime, DateInterval, DatePeriod;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Http;
 use Intervention\Image\Facades\Image;
 
 class Shortcut {  
-
+	public function jsonResponse(bool $status = true, string $message = 'Success', int $code = 200, $data = null): \Illuminate\Http\JsonResponse
+    {
+        return response()->json([
+            'status' => $status,
+            'message' => $message,
+            'row' => $data
+        ], $code);
+    }
     public function inf_medium_bulan($bln)
 	{
 		switch ($bln)
@@ -255,19 +263,32 @@ class Shortcut {
 		$timeAgo = $carbonDate->diffForHumans();
 		return $timeAgo;
 	}
-	public static function downloadImage($photoUrl)
+	public static function logActivities($activities)
 	{
-		// Get the contents of the photo from the URL
-		$photoContents  = Http::get($photoUrl)->body();
-		// Get the file extension
-		$fileExtension = pathinfo($photoUrl, PATHINFO_EXTENSION);
-		// If you couldn't get the extension from the URL, you can try from the content type
-		if (empty($fileExtension)) {
-			$contentType = Http::get($photoUrl)->header('Content-Type');
-			$fileExtension = explode('/', $contentType)[1];
-		}
-		$filename = md5(Shortcut::random_strings(20)) . '.' . $fileExtension;
-		Image::make($photoContents)->save(public_path('dist/img/anggota/'.$filename));
-		return $filename;
+		$ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = null;    
+		
+        LogActivities::create([
+			'ip_address' => $ipaddress,
+			'description' => $activities,
+			'fid_user' => auth()->check() ? auth()->user()->id : NULL,
+			'url' => Request::fullUrl(),
+			'method' => Request::method(),
+			'agent' => Request::header('user-agent'),
+		]);
+		return true;
 	}
 }
