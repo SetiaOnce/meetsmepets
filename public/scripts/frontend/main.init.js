@@ -98,7 +98,7 @@ const loadApp = function() {
             type: "GET",
             dataType: "JSON",
             success: function (data) {
-                $('#LayananSection .headTitle').html(`<h3 class="text-white z-index-1 position-relative">Layanan</h3>`);
+                $('#LayananSection .headTitle').html(`<h3 class="text-white z-index-1 position-relative">SOP Layanan</h3>`);
                 let rows = data.row;
                 bodyContent = '';
                 $.each(rows, function(key, row) {
