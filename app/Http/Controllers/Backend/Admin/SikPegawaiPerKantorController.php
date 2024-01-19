@@ -67,30 +67,48 @@ class SikPegawaiPerKantorController extends Controller
             $dataPegawai = json_decode(SoapSik::whereId(1)->first()->pegawai_perkantor);
             if(!empty($dataPegawai)) {   
                 foreach($dataPegawai as $row){
-                    DataSdm::updateOrCreate(
-                    [
-                        'nik' => $row->nik
-                    ],
-                    [
-                        'kantor' => $row->kantor,
-                        'sub_kantor' => $row->subkantor,
-                        'unit' => $row->unit,
-                        'jabatan_struktural' => $row->jabatan_struktural,
-                        'jabatan_fungsional' => $row->jabatan_fungsional,
-                        'nik' => $row->nik,
-                        'nip' => $row->nip,
-                        'nama_pegawai' => $row->nama,
-                        'alamat' => '-',
-                        'telp' => substr($row->telepon, 0, 14),
-                        'email' => $row->email,
-                        'tempat_lahir' => $row->tempat_lahir,
-                        'tanggal_lahir' => $row->tanggal_lahir,
-                        'status_kepegawaian' => 3,
-                        'password' => Hash::make('p@ssword'),
-                        'foto' => $row->foto,
-                        'user_add' => 'Yoga Setiawan',
-                        'created_at' => Carbon::now()
-                    ]);
+                    if (!empty(DataSdm::whereNik($row->nik)->first())) {
+                        DataSdm::whereNik($row->nik)->update([
+                            'kantor' => $row->kantor,
+                            'sub_kantor' => $row->subkantor,
+                            'unit' => $row->unit,
+                            'jabatan_struktural' => $row->jabatan_struktural,
+                            'jabatan_fungsional' => $row->jabatan_fungsional,
+                            'nik' => $row->nik,
+                            'nip' => $row->nip,
+                            'nama_pegawai' => $row->nama,
+                            'alamat' => '-',
+                            'telp' => substr($row->telepon, 0, 14),
+                            'email' => $row->email,
+                            'tempat_lahir' => $row->tempat_lahir,
+                            'tanggal_lahir' => $row->tanggal_lahir,
+                            'status_kepegawaian' => 3,
+                            'foto' => $row->foto,
+                            'user_updated' => Auth::user()->nama_pegawai,
+                            'updated_at' => Carbon::now()
+                        ]);
+                    }else{
+                        DataSdm::create([
+                            'kantor' => $row->kantor,
+                            'sub_kantor' => $row->subkantor,
+                            'unit' => $row->unit,
+                            'jabatan_struktural' => $row->jabatan_struktural,
+                            'jabatan_fungsional' => $row->jabatan_fungsional,
+                            'nik' => $row->nik,
+                            'nip' => $row->nip,
+                            'nama_pegawai' => $row->nama,
+                            'alamat' => '-',
+                            'telp' => substr($row->telepon, 0, 14),
+                            'email' => $row->email,
+                            'tempat_lahir' => $row->tempat_lahir,
+                            'tanggal_lahir' => $row->tanggal_lahir,
+                            'status_kepegawaian' => 3,
+                            'password' => Hash::make('p@ssword'),
+                            'foto' => $row->foto,
+                            'user_add' => Auth::user()->nama_pegawai,
+                            'created_at' => Carbon::now()
+                        ]);
+                    }
                 }
                 $output = array("status" => TRUE);
             } else {
