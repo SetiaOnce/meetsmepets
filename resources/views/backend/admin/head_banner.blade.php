@@ -6,7 +6,7 @@
     <div class="card-body">
         <div class="d-flex justify-content-between align-items-start flex-wrap mb-10">
             <h3 class="fw-bolder m-0 mb-3"><i class="las la-pen text-dark fs-2 me-3"></i>Edit Konten Head Banner</h3>
-            <a href="javascript:history.back();" class="btn btn-sm btn-bg-light btn-color-danger btn-active-light-danger ms-3"><i class="las la-undo fs-3 me-1"></i>Kembali</a>
+            {{-- <a href="javascript:history.back();" class="btn btn-sm btn-bg-light btn-color-danger btn-active-light-danger ms-3"><i class="las la-undo fs-3 me-1"></i>Kembali</a> --}}
         </div>
         <!--begin::Form-->
         <form id="form-editHeadBanner" class="form" onsubmit="return false">
