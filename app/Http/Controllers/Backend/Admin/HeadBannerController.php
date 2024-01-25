@@ -129,7 +129,7 @@ class HeadBannerController extends Controller
             $fileNewNameExt = $fileNewName . '.' . $fileExtension;
             // $fileInput->move($destinationPath, $fileNewNameExt);
             $compressedImage = Image::make($fileInput)
-                ->save($destinationPath . '/' . $fileNewNameExt, 10);
+                ->save($destinationPath . '/' . $fileNewNameExt);
             return [
                 'file_name' => $fileNewNameExt
             ];
