@@ -97,8 +97,8 @@ var loadSiteInfo = function() {
 				<img src="` +data.row.login_logo_url+ `" class="w-60" height="52" alt="` +data.row.login_logo+ `">
 			</a>
 			<p class="mt-1 text-sm text-center text-info"><strong>Login Pengelola</strong></p>`);
-			$('.btnBottom').html(`<a href="{{ url('/') }}" class="form-check-label mb-0 ms-3 text-primary"><i class="fa fa-home align-center me-1 text-primary"></i>Beranda</a>
-			<a href="{{ url('/') }}" class="form-check-label mb-0 ms-3 text-dark"><i class="fa fa-sign-in align-center me-1 text-info"></i>Log In SSO</a>`);
+			$('.btnBottom').html(`<a href="` +BASE_URL+ `/login" class="form-check-label mb-0 ms-3 text-dark"><i class="fa fa-sign-in align-center me-1 text-dark"></i>Log In Pegawai</a>
+			<a href="` +BASE_URL+ `/" class="form-check-label mb-0 ms-3 text-dark"><i class="fa fa-sign-in align-center me-1 text-dark"></i>Log In SSO</a>`);
 			$('#loader-action').hide(),$('#btn-login-submit').show();
 			$('#kt_footer .copyRight').html(data.row.copyright);
 		},error: function (jqXHR, textStatus, errorThrown) {
