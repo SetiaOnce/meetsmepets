@@ -47,7 +47,7 @@ const loadApp = function() {
                 bodyContent = '';
                 $.each(rows, function(key, row) {
                     bodyContent += `<div class="col-md-4 mb-2">
-                    <a href="`+row.link_url+`" title="`+row.nama_aplikasi+`" class="card  card-background card-background-mask-dark align-items-center">
+                    <a href="`+row.link_url+`" target="_blank" title="`+row.nama_aplikasi+`" class="card  card-background card-background-mask-dark align-items-center">
                         <div class="full-background cursor-pointer" style="background-image: url('`+row.icon_url+`')"></div>
                         <div class="card-body text-center">
                             <h5 class="text-white mb-0 fs-6">`+row.nama_aplikasi+`</h5>
