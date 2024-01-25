@@ -83,6 +83,6 @@ class LoginPegawaiController extends Controller
         DataSdm::whereId(session()->get('id'))->update(['is_online' => 0]);
         event(new StatusOnline(session()->get('nama_pegawai'), 'offline', DataSdm::whereIsOnline(1)->count()));
         session()->flush();
-        return redirect('/login');
+        return redirect('/login-admin');
     }
 }
