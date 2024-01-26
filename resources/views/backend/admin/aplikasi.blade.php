@@ -64,6 +64,7 @@
                         <input type="file" class="dropify-upl mb-3 mb-lg-0" id="icon" name="icon" accept=".png, .jpg, .jpeg" data-show-remove="false" data-allowed-file-extensions="jpg png jpeg" data-max-file-size="2M" />
                         <div class="form-text">*) Type file: <code>*.jpeg | *.jpeg | *.png</code></div>
                         <div class="form-text">*) Max. size file: <code>2MB</code></div>
+                        <div class="form-text">*) Ukuran Ideal: Weight=<code>3270px</code> Height<code>835px</code></div>
                     </div>
                     <!--end::Input group-->
                 </div>
