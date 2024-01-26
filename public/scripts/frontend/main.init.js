@@ -104,7 +104,7 @@ const loadApp = function() {
                 $.each(rows, function(key, row) {
                     bodyContent += `<div class="col-lg-6 col-12">
                     <div class="card card-profile mt-4">
-                        <div class="row" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="`+row.description+`">
+                        <div class="row" data-bs-toggle="popover" data-color="secondary" data-bs-placement="left" data-bs-content="`+row.description+`">
                             <div class="col-lg-4 col-md-6 col-12 mt-n5">
                                 <a href="javascript:void(0);" >
                                     <div class="p-3 pe-md-0">
