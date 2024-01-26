@@ -18,7 +18,9 @@
 <link href="{{ asset('dist/css/style.backend.init.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Global Stylesheets Bundle-->
 <!-- Base Route JS -->
-<script src="{{ asset('dist/js/base_route.js') }}"></script>
+<script>
+    const base_url = "{{url('/')}}/";
+</script>
 <script>
     // Frame-busting to prevent site from being loaded within a frame without permission (click-jacking)
     if (window.top != window.self) {
