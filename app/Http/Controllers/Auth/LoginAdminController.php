@@ -59,6 +59,6 @@ class LoginAdminController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         Shortcut::logActivities('Melakukan Logout Pada Aplikasi Ini');
-        return redirect('/login-admin');
+        return redirect('/login');
     }
 }
