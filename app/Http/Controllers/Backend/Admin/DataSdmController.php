@@ -59,6 +59,7 @@ class DataSdmController extends Controller
         $data = DataSdm::orderBy('id', 'ASC')->get();
         return Datatables::of($data)->addIndexColumn()
             ->editColumn('pegawai', function ($row) {
+                // status online
                 $onlineStatus = '<div class="mb-0 lh-1">
                     <span class="badge badge-danger badge-circle w-10px h-10px me-1"></span>
                     <span class="fs-7 fw-semibold text-muted">Offline</span>
@@ -69,7 +70,13 @@ class DataSdmController extends Controller
                         <span class="fs-7 fw-semibold text-muted">Online</span>
                     </div>';
                 }
-                return $row->nama_pegawai.'<br><span class="text-primary">'.$row->email.'</span><br>'.$onlineStatus.'';
+                // jabatan pegawai
+                if(empty($row->jabatan_struktural)){
+                    $jabatan = '<i class="bi bi-bookmark-star-fill align-middle me-1"></i>'.$row->jabatan_fungsional;
+                }else{
+                    $jabatan = '<i class="bi bi-bookmark-star-fill align-middle me-1"></i>'.$row->jabatan_struktural;
+                }
+                return $row->nama_pegawai.'<br><span class="text-primary">'.$row->email.'</span><br>'.$jabatan.''.$onlineStatus;
             })
             ->editColumn('nik', function ($row) {
                 if(is_null($row->nik)){
