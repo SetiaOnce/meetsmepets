@@ -127,4 +127,21 @@ class LoginController extends Controller
             ]);
         }
     }  
+    /**
+     * logout_sessions
+     *
+     * @param  mixed $request
+     * @return void
+     */
+    public function logout_sessions(Request $request) {
+        $arrayCookie = array();
+        foreach (Cookie::get() as $key => $item){
+            $arrayCookie []= cookie($key, null, -2628000, null, null);
+        }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        session()->flush();
+        Artisan::call('cache:clear');
+        return redirect('/');
+    }
 }
