@@ -1,19 +1,30 @@
 <!-- Sidebar -->
 <div class="dark-overlay"></div>
-<div class="sidebar">
+<div class="sidebar" id="appSideMenu">
     <div class="inner-sidebar">
-        <a href="profile.html" class="author-box">
+        <a href="{{ url('profile') }}" class="author-box">
             <div class="dz-media">
-                <img src="../assets/images/user/pic1.jpg" alt="author-image">
+                <svg class="bd-placeholder-img rounded w-100 h-275px" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <rect width="100%" height="100%" fill="#868e96"></rect>
+                </svg>
             </div>
-            <div class="dz-info">
-                <h5 class="name">John Doe</h5>
-                <span>example@gmail.com</span>
+            <!--begin::Detail User-->
+            <div class="d-flex flex-row flex-column w-100">
+                <!--begin::Row-->
+                <div class="row">
+                    <h5 class="placeholder-glow w-100 d-flex flex-row flex-column">
+                        <span class="placeholder col-lg-10 rounded mb-1"></span>
+                        <span class="placeholder col-lg-8 rounded"></span>
+                    </h5>
+                </div>
+                <!--end::Input group-->
             </div>
+            <!--end::Detail User-->
         </a>
+
         <ul class="nav navbar-nav">	
             <li>
-                <a class="nav-link active" href="home.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('HOME') ? 'active' : '' }}" href="home.html">
                     <span class="dz-icon">
                         <i class="icon feather icon-home"></i>
                     </span>
@@ -21,47 +32,31 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="../package.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('LOVE') ? 'active' : '' }}" href="../package.html">
                     <span class="dz-icon">
-                        <i class="icon feather icon-heart"></i>
+                        <i class="icon feather icon-heart-on"></i>
                     </span>
-                    <span>W3Dating Package</span>
+                    <span>Love</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="../package-list.html">
-                    <span class="dz-icon">
-                        <i class="icon feather icon-list"></i>
-                    </span>
-                    <span>Package List</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="../index.html">
-                    <span class="dz-icon">
-                        <i class="icon feather icon-wind"></i>
-                    </span>
-                    <span>Welcome</span>
-                </a>
-            </li>
-            <li>
-                <a class="nav-link" href="../components/components.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('EXPLORE') ? 'active' : '' }}" href="../package.html">
                     <span class="dz-icon">
                         <i class="icon feather icon-grid"></i>
                     </span>
-                    <span>Components</span>
+                    <span>Explore</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="setting.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('CHAT') ? 'active' : '' }}" href="../package.html">
                     <span class="dz-icon">
-                        <i class="icon feather icon-settings"></i>
+                        <i class="fa fa-comments"></i>
                     </span>
-                    <span>Settings</span>
+                    <span>Chat</span>
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="profile.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('PROFILE') ? 'active' : '' }}" href="{{ url('/profile') }}">
                     <span class="dz-icon">
                         <i class="icon feather icon-user"></i>
                     </span>
@@ -69,7 +64,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link" href="onboarding.html">
+                <a class="nav-link" href="{{ url('/logout') }}">
                     <span class="dz-icon">
                         <i class="icon feather icon-log-out"></i>
                     </span>
@@ -93,8 +88,9 @@
                 </li>
             </ul>
             <div class="app-info">
-                <h6 class="name">W3Dating - Dating App</h6>
-                <span class="ver-info">App Version 1.1</span>
+                <h3 class="placeholder-glow">
+                    <span class="placeholder rounded col-12"></span>
+                </h3>
             </div>
         </div>
     </div>
