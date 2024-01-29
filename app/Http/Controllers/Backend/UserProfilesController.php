@@ -50,7 +50,7 @@ class UserProfilesController extends Controller
      * @return void
      */
     protected function update_userprofile(Request $request) {
-        $userSesIdp = Auth::user()->id;
+        $userSesIdp = Auth::guard('web')->user()->id;
         $form = [
             'name' => 'required|max:100',
             'username' => 'required|max:100',
@@ -120,7 +120,7 @@ class UserProfilesController extends Controller
      * @return void
      */
     protected function update_userpassprofil(Request $request) {
-        $userSesIdp = Auth::user()->id;
+        $userSesIdp = Auth::guard('web')->user()->id;
         $form = [
             'pass_lama' => 'required|min:6|max:50',
             'pass_baru' => 'required|min:6|max:50',
@@ -157,7 +157,7 @@ class UserProfilesController extends Controller
      * @return void
      */
     protected function upload_imgeditor(Request $request) {
-        $userSesIdp = Auth::user()->id;
+        $userSesIdp = Auth::guard('web')->user()->id;
         $form = [
             'image' => 'mimes:png,jpg,jpeg|max:1024',
         ];
