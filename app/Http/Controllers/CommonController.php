@@ -31,4 +31,20 @@ class CommonController extends Controller
         $userInfo->last_login = Shortcut::timeago($userInfo->last_login);
         return Shortcut::jsonResponse(true, 'Success', 200, $userInfo);
     }
+    public function ownerInfo()
+    {
+        $userInfo = Auth::guard('owner')->user();
+        $file_name = $userInfo->thumb;
+        if($file_name==''){
+            $userInfo->thumb_url = asset('dist/img/default-user-img.jpg');
+        } else {
+            if (!file_exists(public_path(). '/dist/img/users-img/'.$file_name)){
+                $userInfo->thumb_url = asset('dist/img/default-user-img.jpg');
+            }else{
+                $userInfo->thumb_url = url('dist/img/users-img/'.$file_name);
+            }
+        }
+        $userInfo->last_login = Shortcut::timeago($userInfo->last_login);
+        return Shortcut::jsonResponse(true, 'Success', 200, $userInfo);
+    }
 }
