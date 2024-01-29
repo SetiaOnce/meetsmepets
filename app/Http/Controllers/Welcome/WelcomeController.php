@@ -16,8 +16,11 @@ class WelcomeController extends Controller
             return redirect('/home');
         }else{
             if ($request->hasCookie('email')) {
-                Auth::guard('owner')->login(Owners::whereEmail($request->cookie('email'))->first());
-                return redirect('/home');
+                $owner = Owners::whereEmail($request->cookie('email'))->first();
+                if(!empty($owner)){
+                    Auth::guard('owner')->login($owner);
+                    return redirect('/home');
+                }
             }
         }
         $getSiteInfo = SiteInfo::whereId(1)->first();
