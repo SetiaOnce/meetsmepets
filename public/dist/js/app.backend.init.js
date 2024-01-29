@@ -10,15 +10,18 @@ const validateEmail = (email) => {
 //System INFO
 const _loadSystemInfo = () => {
 	$.ajax({
-        url: base_url+ "app_admin/ajax/load_site_info",
+        url: base_url+ "api/site_info",
         type: "GET",
         dataType: "JSON",
         success: function (data) {
-            $('#kt_app_sidebar_logo a').html(`<img alt="Logo" src="` +data.headbackend_logo_dark_url+ `" class="h-40px app-sidebar-logo-default" />
-                <img alt="Logo" src="` +data.headbackend_icon_dark_url+ `" class="h-40px app-sidebar-logo-minimize" />`);
-            $('#mobileHeadLogo').html(`<img alt="Logo" src="` +data.headbackend_logo_url+ `" class="h-50px theme-light-show" />
-                <img alt="Logo" src="` +data.headbackend_logo_dark_url+ `" class="h-50px theme-dark-show" />`);
-            $('#copyRight').html(data.row.copyright);
+            let headerLogo = `
+                <img alt="Logo" src="` +data.row.headbackend_logo_url+ `" class="h-40px app-sidebar-logo-default" />
+                <img alt="Logo" src="` +data.row.headbackend_icon_url+ `" class="h-40px app-sidebar-logo-minimize" />
+            `;
+            $('#kt_app_sidebar_logo a').html(headerLogo);
+            let headerLogoMobile = `<img alt="Logo-mobile" src="` +data.row.headbackend_icon_url+ `" class="h-30px" />`;
+            $('#logoMobile a').html(headerLogoMobile);
+            $('#footerCopyright').html(data.row.copyright);
         }, error: function (jqXHR, textStatus, errorThrown) {
             console.log('Load data is error');
         }
@@ -27,15 +30,15 @@ const _loadSystemInfo = () => {
 //User INFO
 const _loadUserInfo = () => {
 	$.ajax({
-        url: base_url+ "app_admin/ajax/user_info",
+        url: base_url+ "api/user_info",
         type: "GET",
         dataType: "JSON",
         success: function (data) {
             let userInfo = data.row;
-            let userThumbHeader = `<img src="` +userInfo.foto+ `" class="rounded-3" alt="avatar-user" />`;
+            let userThumbHeader = `<img src="` +userInfo.thumb_url+ `" class="rounded-3" alt="avatar-user" />`;
             $('#kt_header_user_menu_toggle .avatar-header').html(userThumbHeader);
             $('#navbarUserInfo').html(`<div class="fw-bold d-flex align-items-center fs-5 text-break">
-                ` +userInfo.nama_pegawai+ `
+                ` +userInfo.name+ `
             </div>
             <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7 text-break"> ` +userInfo.email+ ` </a>`);
         }, error: function (jqXHR, textStatus, errorThrown) {

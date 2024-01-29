@@ -1,16 +1,22 @@
-<!-- CSS Files -->
-<link id="pagestyle" href="{{ asset('dist/frontend/css/material-kit.css?v=3.0.4') }}" rel="stylesheet" />
-<!-- Material Icons -->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-<!-- bootstrap selectpicker -->
-<link rel="stylesheet" href="{{ asset('dist/plugins/bootstrap-select/css/bootstrap-select.min.css') }}">
-<link rel="stylesheet" href="{{ asset('dist/plugins/select2/css/select2.min.css') }}">
-<!-- toast -->
-<link rel="stylesheet" href="{{ asset('dist/plugins/sweetalert2/sweetalert2.min.css') }}">
-<!-- Font Awesome Icons -->
-<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-<!-- Fonts and icons -->
-<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700">
-@yield('css')
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,200;6..12,300;6..12,400;6..12,500;6..12,600;6..12,700;6..12,800;6..12,900;6..12,1000&family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<!-- Stylesheets -->
+<link rel="stylesheet" class="main-css" type="text/css" href="{{ asset('dist/assets/css/style.css') }}">
 <!-- Base route -->
-<script>var BASE_URL = "{{url('/')}}";</script> 
+<!--begin::Vendor Stylesheets(used for this page only)-->
+@if (isset($data['css']))
+    @foreach ($data['css'] as $dt)
+        @php $uri = asset($dt); @endphp
+        @if(str_contains($dt, 'https://'))
+            @php $uri = $dt; @endphp
+        @endif
+        <link rel="stylesheet" href="{{ $uri }}">
+    @endforeach
+@endif
+<!--end::Vendor Stylesheets-->
+<script>
+    const base_url = "{{url('/')}}/";
+</script>
+@yield('css')

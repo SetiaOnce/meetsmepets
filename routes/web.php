@@ -1,58 +1,50 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginAdminController;
-use App\Http\Controllers\Auth\LoginPegawaiController;
-use App\Http\Controllers\Frontend\FrontendController;
-use App\Http\Controllers\SelectController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommonController;
+use App\Http\Controllers\Welcome\LoginController;
+use App\Http\Controllers\Welcome\RegisterController;
+use App\Http\Controllers\Welcome\WelcomeController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
-Route::controller(FrontendController::class)->group(function(){
-    Route::get('/', 'index');
-    Route::get('/ajax/load_login_info', 'loginInfo');
-});
-/*For handle login admin*/ 
-Route::controller(LoginAdminController::class)->group(function(){
+Route::controller(AuthController::class)->group(function(){
     Route::get('/login-admin', 'index');
-    Route::post('/ajax/request_login_admin', 'requestLogin');
-    Route::get('/logout', 'logout');
-});
-/*For handle login pegawai*/ 
-Route::controller(LoginPegawaiController::class)->group(function(){
-    Route::get('/login', 'index');
-    Route::post('/ajax/request_login_pegawai', 'requestLogin');
-    Route::get('/logout-pegawai', 'logout');
-});
-Route::get('/reloadcaptcha', function () {
-	return captcha_img();
-});
-/*Handle All Front Ajax*/
-Route::group(['prefix' => 'front'], function () {
-    Route::controller(FrontendController::class)->group(function(){
-        Route::get('/banner/view', 'BannerView');
-        Route::get('/aplikasi/view', 'AplikasiView');
-        Route::get('/layanan/view', 'LayananView');
+    Route::group(['prefix' => 'auth'], function () {
+        Route::get('/logout', 'logout_sessions')->name('logout_sessions');
     });
 });
-/*Handle select all master data*/
-Route::group(['prefix' => 'select'], function () {
-    Route::controller(SelectController::class)->group(function(){
-        Route::get('/get_pegawai', 'getPegawai');
-        Route::get('/get_aplikasi', 'getAplikasi');
-        Route::get('/get_level_aplikasi', 'getLevelAplikasi');
+//Api ajax App Auth
+Route::group(['prefix' => 'api'], function () {
+    Route::controller(CommonController::class)->group(function(){
+        Route::get('/site_info', 'siteInfo');
+        Route::get('/user_info', 'userInfo');
     });
-});
-
-// App Admin
-Route::group(['prefix' => 'app_admin'], function () {
-    require base_path('routes/common.php');
-    Route::group(['middleware' => 'auth'], function() {
-        Route::group(['middleware' => 'checkRole:1'], function() {
-            require base_path('routes/admin.php');
+    Route::controller(AuthController::class)->group(function () {
+        Route::group(['prefix' => 'auth'], function () {
+            Route::post('/first_login', 'first_login')->name('first_login');
+            Route::post('/second_login', 'second_login')->name('second_login');
         });
     });
 });
-// handle pegawai route
-Route::group(['prefix' => 'app_pegawai'], function () {
-    require base_path('routes/pegawai.php');
+// All Welcome Request
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::controller(LoginController::class)->group(function(){
+    Route::get('/auth', 'index');
+    Route::group(['prefix' => 'api'], function () {
+        Route::post('auth/first_step', 'first_step')->name('first_step');
+        Route::post('auth/second_step', 'second_step')->name('second_step');
+    });
+});
+Route::controller(RegisterController::class)->group(function(){
+    Route::get('/register', 'index');
+    Route::group(['prefix' => 'api'], function () {
+        Route::post('register/first_register', 'first_step')->name('first_register');
+        Route::post('register/second_tegister', 'second_step')->name('second_tegister');
+    });
+});
+Route::group(['middleware' => 'AuthOwner'], function() {
+    require base_path('routes/owner.php');
+});
+Route::group(['middleware' => 'auth'], function() {
+    require base_path('routes/admin.php');
 });

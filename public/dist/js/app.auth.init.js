@@ -11,16 +11,16 @@ const _loadSystemInfo = () => {
         success: function (data) {
             let siteInfo = data.row;
             $('#kt_body').attr('style', `background-size: cover; background-position: unset; background-image: linear-gradient(0deg, rgb(7 0 40), #16246dcc), url(` +siteInfo.login_bg_url+ `);`),
-			$('#aside-auth').html(`<div class="d-flex flex-center flex-lg-start flex-column">
+			$('#aside-auth').html(`<div class="d-flex flex-center flex-lg-center flex-column">
 				<h1 class="text-white fs-2qx fw-bolder text-center mb-0 mb-lg-3">
-					Sistem Informasi Monitoring Kinerja Terminal
+				Lorem Ipsum is simply dummy text of the printing.
 				</h1>
-				<h2 class="text-white fw-bold fs-3qx m-0"> 
-					BPTD Kelas II Banten
+				<h2 class="text-white fw-bold fs-3qx m-0 text-center"> 
+					<span style="color:#96E9C6;">MEETS</span>ME
 				</h2>
 			</div>`),
             $('#hLogo-login').html(`<a href="` +base_url+ `auth" title="LOGIN - ` +siteInfo.short_name+ `">
-                <img src="` +siteInfo.login_logo_url+ `" class="mb-5 theme-light-show" height="52" alt="` +siteInfo.login_logo+ `">
+                <img src="` +siteInfo.login_logo_url+ `" class="mb-5 theme-light-show" height="78" alt="` +siteInfo.login_logo+ `">
                 <img src="` +siteInfo.headbackend_logo_dark_url+ `" class="mb-5 theme-dark-show" height="52" alt="` +siteInfo.headbackend_logo_dark+ `">
             </a>`);
             $('#copyRight').html(siteInfo.copyright);
@@ -178,36 +178,13 @@ var KTLogin = function() {
 				}
 			});
 		});
-		/*/ Handle forgot button
-		$('#kt_login_forgot').on('click', function (e) {
-			e.preventDefault();
-			//_showForm('forgot');
-			Swal.fire({
-				title: "Warning!",
-				html: 'Mohon maaf fitur ini sedang tahap pengembangan. Agar dapat login ke sistem, silahkan lakukan konfirmasi akun user ke pihak Admin PIC Aplikasi.',
-				icon: "warning",
-				allowOutsideClick: false
-			})
-		});*/
 	}
-	/*var _handleForgotForm = function(e) {
-        // Handle submit button
-        $('#kt_login_forgot_submit').on('click', function (e) {
-            e.preventDefault();
-        });
-        // Handle cancel button
-        $('#kt_login_forgot_cancel').on('click', function (e) {
-            e.preventDefault();
-            _showForm('signin2');
-        });
-    }*/
     // Public Functions
     return {
         // public functions
         init: function() {
             _handleSignInForm();
             _handleSignIn2Form();
-            //_handleForgotForm();
         }
     };
 }();

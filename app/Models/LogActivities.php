@@ -7,16 +7,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class LogActivities extends Model
 {
-    public $table = 'log_activities';
+    use HasFactory;
+
+    protected $table = 'log_activities';
+    protected $guarded = ['id'];
 
     public $timestamps = false;
 
-    protected $guarded = [];
-    
-    use HasFactory;
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'ip_address',
+        'fid_user',
+        'description',
+        'url',
+        'method',
+        'agent',
+        'app',
+        'timestamp'
+    ];
 
-    public function user()
-    {
-    	return $this->belongsTo('App\Models\DataSdm', 'fid_user', 'id'); 
-    } 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'ip_address',
+        'fid_user'
+    ];
 }

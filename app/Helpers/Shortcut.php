@@ -11,13 +11,45 @@ use Illuminate\Support\Facades\Http;
 use Intervention\Image\Facades\Image;
 
 class Shortcut {  
-	public function jsonResponse(bool $status = true, string $message = 'Success', int $code = 200, $data = null): \Illuminate\Http\JsonResponse
+	public static function jsonResponse(bool $status = true, string $message = 'Success', int $code = 200, $data = null): \Illuminate\Http\JsonResponse
     {
         return response()->json([
             'status' => $status,
             'message' => $message,
             'row' => $data
         ], $code);
+    }
+	public static function addToLog($desc)
+    {
+        $log = [];
+        $ipaddress =  self::getUserIp();
+        if($ipaddress) {
+            $log['ip_address'] =  self::getUserIp();
+            $log['description'] = $desc;
+            $log['fid_user'] = auth()->check() ? auth()->user()->id : NULL;
+            $log['url'] = Request::fullUrl();
+            $log['method'] = Request::method();
+            $log['agent'] = Request::header('user-agent');
+            LogActivities::create($log);
+        }
+    }
+	public static function getUserIp() {
+        $ipaddress = '';
+        if (isset($_SERVER['HTTP_CLIENT_IP']))
+            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_X_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+        else if(isset($_SERVER['HTTP_FORWARDED']))
+            $ipaddress = $_SERVER['HTTP_FORWARDED'];
+        else if(isset($_SERVER['REMOTE_ADDR']))
+            $ipaddress = $_SERVER['REMOTE_ADDR'];
+        else
+            $ipaddress = null;    
+        return $ipaddress;
     }
     public function inf_medium_bulan($bln)
 	{
@@ -262,33 +294,5 @@ class Shortcut {
 		// Get the "time ago" in Indonesian
 		$timeAgo = $carbonDate->diffForHumans();
 		return $timeAgo;
-	}
-	public static function logActivities($activities)
-	{
-		$ipaddress = '';
-        if (isset($_SERVER['HTTP_CLIENT_IP']))
-            $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_X_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-        else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-        else if(isset($_SERVER['HTTP_FORWARDED']))
-            $ipaddress = $_SERVER['HTTP_FORWARDED'];
-        else if(isset($_SERVER['REMOTE_ADDR']))
-            $ipaddress = $_SERVER['REMOTE_ADDR'];
-        else
-            $ipaddress = null;    
-		
-        LogActivities::create([
-			'ip_address' => $ipaddress,
-			'description' => $activities,
-			'fid_user' => auth()->check() ? auth()->user()->id : NULL,
-			'url' => Request::fullUrl(),
-			'method' => Request::method(),
-			'agent' => Request::header('user-agent'),
-		]);
-		return true;
 	}
 }

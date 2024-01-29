@@ -1,28 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('dist/img/site-img/logo-direktorat.png') }}">
-  <link rel="icon" type="image/png" href="{{ asset('dist/img/site-img/logo-direktorat.png') }}">
-  <title>Sistem Informasi Sarana Perkeretaapian</title>
-  <!-- Nucleo Icons -->
-  <link href="{{ asset('dist/frontend/css/nucleo-icons.css') }}" rel="stylesheet" />
-  <link href="{{ asset('dist/frontend/css/nucleo-svg.css') }}" rel="stylesheet" />
-  @include('frontend.partials.style')
-</head>
-<body class="index-page bg-gray-200">
-  <!-- begin: header -->
-  @include('frontend.partials.header')
-  <!-- end: header -->
-  <!-- begin: card body -->
-  <div class="card card-body  mx-3 mx-md-4 mt-n6">
-    @yield('content')
-  </div>
-  <!-- end: card body -->
-  <!-- begin: footer -->
-  @include('frontend.partials.footer')
-  <!-- end: footer -->
-  @include('frontend.partials.script')
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="robots" content="index, follow, noodp, noydir" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>
+        {{ isset($data['title']) ? $data['title'] : 'Unknown' }} - {{ $data['app_name'] }}
+    </title>
+    <meta name="author" content="@YogaSetiawan" />
+    <meta name="email" content="yogasetiawan1126@gmail.com" />
+    <meta name="website" content="{{ $data['url'] }}" />
+    <meta name="Version" content="{{ $data['app_version'] }}" />
+    <meta name="docsearch:language" content="id">
+    <meta name="docsearch:version" content="{{ $data['app_version'] }}" />
+    <link rel="canonical" href="{{ $data['url'] }}" />
+    <!-- Favicons -->
+    <link rel="icon" type="image/png" href="{{ asset('dist/img/site-img/meetsme-logo-light.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('/dist/img/favicon/apple-touch-icon.png') }}" />
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('/dist/img/favicon/favicon-32x32.png') }}" />
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('/dist/img/favicon/favicon-16x16.png') }}" />
+    <link rel="manifest" href="{{ asset('/dist/img/favicon/site.webmanifest') }}" />
+    <link rel="mask-icon" href="{{ asset('/dist/img/favicon/safari-pinned-tab.svg') }}" color="#26296e" />
+    <meta name="msapplication-TileColor" content="#061824" />
+    <meta name="theme-color" content="#26296e" />
+    <meta name="application-name" content="{{ $data['app_name'] }}" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="HandheldFriendly" content="true" />
+    @include('frontend.partials.style')
+</head>   
+<body class="bg-white">
+    <div class="page-wrapper">
+        @include('frontend.partials.loader')
+        @include('frontend.partials.header')
+        @include('frontend.partials.sidemenu')
+        @yield('content')
+        @include('frontend.partials.menubar')
+    </div>
+@include('frontend.partials.script')
 </body>
 </html>
