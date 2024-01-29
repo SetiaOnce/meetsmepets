@@ -21,6 +21,7 @@ class CommonController extends Controller
         $getSiteInfo->headbackend_logo_dark_url = asset('dist/img/site-img/'.$getSiteInfo->headbackend_logo_dark);
         $getSiteInfo->headbackend_icon_url = asset('dist/img/site-img/'.$getSiteInfo->headbackend_icon);
         $getSiteInfo->headbackend_icon_dark_url = asset('dist/img/site-img/'.$getSiteInfo->headbackend_icon_dark);
+        $getSiteInfo->headpublic_logo_url = asset('dist/img/site-img/'.$getSiteInfo->headpublic_logo);
         return Shortcut::jsonResponse(true, 'Success', 200, $getSiteInfo);
     }
     public function userInfo()
