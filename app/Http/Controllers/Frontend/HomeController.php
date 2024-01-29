@@ -26,7 +26,8 @@ class HomeController extends Controller
         );
         //Data Source JS
         $data['js'] = array(
-            'scripts/frontend/home.js'
+            'scripts/frontend/siteinfo.init.js',
+            'scripts/frontend/home.init.js',
         );
         return view('frontend.index', compact('data'));
     }
