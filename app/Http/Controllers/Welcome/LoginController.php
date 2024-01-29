@@ -23,8 +23,11 @@ class LoginController extends Controller
             return redirect('/home');
         }else{
             if ($request->hasCookie('email')) {
-                Auth::guard('owner')->login(Owners::whereEmail($request->cookie('email'))->first());
-                return redirect('/home');
+                $owner = Owners::whereEmail($request->cookie('email'))->first();
+                if(!empty($owner)){
+                    Auth::guard('owner')->login($owner);
+                    return redirect('/home');
+                }
             }
         }
         $getSiteInfo = SiteInfo::whereId(1)->first();
@@ -101,8 +104,6 @@ class LoginController extends Controller
                 return Shortcut::jsonResponse(false, 'PIN yang dimasukkan tidak sesuai, coba lagi dengan PIN yang benar!', 200, ['error_code' => 'PASSWORD_NOT_VALID']);
             }
             Auth::guard('owner')->login($user);
-            //Created Token Sanctum
-            $request->user()->createToken('api-token')->plainTextToken;
             Shortcut::addToLog('Second step login successful, the user session has been created');
             //Update Data User Session
             Owners::where('id', Auth::guard('owner')->user()->id)->update([
