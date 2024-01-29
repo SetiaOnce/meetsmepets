@@ -98,7 +98,7 @@ var KTLogin = function() {
 				success: function (data) {
 					$('#btn-login2').html('Next').attr('disabled', false);
 					if (data.status==true){
-						let nextUrl = data.row.last_visited_url ? data.row.last_visited_url : base_url+ 'app_admin';
+						let nextUrl = data.row.last_visited_url ? data.row.last_visited_url : base_url+ 'home';
 						window.location = nextUrl;
 					}else{
 						if(data.row.error_code=='PASSWORD_NOT_VALID') {
