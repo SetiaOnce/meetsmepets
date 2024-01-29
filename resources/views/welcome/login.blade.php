@@ -59,7 +59,7 @@
                     <div id="otp" class="digit-group input-mini">
                         <input class="form-control" type="password" id="digit_2" name="digit_2" data-next="digit_3" data-previous="digit-1">
                         <input class="form-control" type="password" id="digit_3" name="digit_3" data-next="digit_4" data-previous="digit_2">
-                        <input class="form-control" type="password" id="digit_4" name="digit_4" data-next="digit_5" data-previous="digit-3">
+                        <input class="form-control" type="password" id="digit_4" name="digit_4" data-next="digit_5" data-previous="digit_3">
                         <input class="form-control" type="password" id="digit_5" name="digit_5" data-next="digit-6" data-previous="digit_4">
                     </div> 
                 </form>
