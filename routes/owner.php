@@ -25,14 +25,17 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/save_distance', 'saveDistance');
             Route::post('/save_lookingfor', 'saveLookingFor');
             // profile edit
-            Route::post('/load_petsalbum', 'loadPets');
+            // Route::post('/load_petsalbum', 'loadPets');
             Route::post('/save_fullname', 'saveFullName');
             Route::post('/save_fotoprofiles', 'saveFotoProfiles');
-            Route::post('/save_petsimages', 'savePetsImgae');
+            // Route::post('/save_petsimages', 'savePetsImgae');
             Route::post('/save_interest', 'saveInterest');
-
+            
+            Route::post('/load_pets', 'loadPets');
             Route::post('/save_pets', 'savePets');
-            Route::post('/update_pets', 'savePets');
+            Route::post('/edit_pet', 'editPets');
+            Route::post('/update_pets', 'updatePets');
+            Route::post('/delete_pet', 'deletePets');
         });
     });
 });
