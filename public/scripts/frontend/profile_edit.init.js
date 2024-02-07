@@ -231,6 +231,15 @@ $('#interest').change(function(){
         }
     });
 });
+// Add pets
+const _addPets = () => {
+    // save_method = "add_pets";
+    // _clearFormUser(),
+    $("#ModalPets .modal-title").html(
+        `<h3 class="fw-bolder fs-6 text-gray-900"><i class="fa fa-plus fs-2 text-gray-900 align-middle me-2"></i>Form Tambah User</h3>`
+    ),
+    $('#ModalPets').modal('show');
+}
 // Class Initialization
 jQuery(document).ready(function() {
     loadSelectpicker_interest();
