@@ -39,7 +39,7 @@
             <div class="card-body">
             </div>
         </div>
-        <form class="form" id="form-images">
+        {{-- <form class="form" id="form-images">
             <div class="row g-3 mb-3"  data-masonry='{"percentPosition": true }'>
             <div class="card-header">
                 <h6 class="title mb-0 font-14 font-w500">Your Pets Album <br><p class="text-muted">*) Click to add or update image | max : <code>2MB</code> | mimes : <code>jpg, jpeg, png</code>
@@ -121,7 +121,7 @@
                     </div>
                 </div>
             </div>
-        </form>
+        </form> --}}
         <div class="card style-3 pb-5">
             <div class="card-header">
                 <h6 class="title mb-0 font-14 font-w500">Interest</h6>
@@ -149,6 +149,7 @@
 </div>
 <!-- Full Name OffCanvas -->
 <!-- Page Content End -->
+
 <!-- Modal Pets Begin -->
 <div class="modal fade" id="ModalPets" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -158,15 +159,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form class="form" id="form-images">
+                <form class="form" id="form-pets">
+                    <input type="hidden" name="id"/><input type="hidden" name="method_formdata"/>
                     <div class="form-group mb-2">
-                        <select class="form-control selectpicker form-control-solid mb-3 mb-lg-0" id="category" name="category[]" data-placeholder="Select category ..."></select>
+                        <select class="form-control selectpicker form-control-solid mb-3 mb-lg-0" id="category" name="category" data-placeholder="Select category ..."></select>
                     </div>
                     <div class="form-group mb-2">
                         <input type="text" name="breed" id="breed" class="form-control" placeholder="Breed ...">
                     </div>
                     <div class="row g-3 mb-3"  data-masonry='{"percentPosition": true }'>
-                        <h6 class="title mb-0 font-14 font-w500">Your Pets Foto <br><p class="text-muted">*) Click to add or update image | max : <code>2MB</code> | mimes : <code>jpg, jpeg, png</code>
+                        <h6 class="title mb-0 font-14 font-w500">Pets Foto <br><p class="text-muted">*) Click to add or update image | max : <code>2MB</code> | mimes : <code>jpg, jpeg, png</code>
                         </p></h6>
                         <div class="col-8">
                             <div class="dz-drop-box style-2">
@@ -247,8 +249,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-floppy-o align-center me-2"></i> Save</button>
-                <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal"><i class="fa fa-times align-center me-2"></i>Close</button>
+                <button type="button" class="btn btn-sm btn-primary" id="btn-savePets"><i class="las la-save align-center me-2"></i> Save</button>
+                <button type="button" class="btn btn-sm btn-secondary" onclick="_closeModal()"><i class="fa fa-times align-center me-2"></i>Close</button>
             </div>
         </div>
     </div>
