@@ -9,7 +9,7 @@
             </div>
             <div class="card-body">
                 <a href="javascript:void(0);" class="setting-input" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom1" aria-controls="offcanvasBottom">
-                    <i class="icon dz-flex-box feather icon-phone-call"></i>
+                    <i class="fa fa-user"></i>
                     <span class="full_name">{{ $data['user_session']['name'] }}</span>
                 </a>
             </div>
@@ -37,6 +37,10 @@
                 </div>
             </div>
             <div class="card-body">
+                <div class="container">
+                    <div class="row g-2" id="data-pets">
+                    </div>
+                </div>
             </div>
         </div>
         {{-- <form class="form" id="form-images">
