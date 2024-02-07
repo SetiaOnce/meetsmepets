@@ -25,6 +25,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::group(['prefix' => 'select'], function () {
             Route::get('/looking_for', 'lookingFor');
             Route::get('/interest', 'interest');
+            Route::get('/category', 'category');
         });
     });
     Route::controller(AuthController::class)->group(function () {
