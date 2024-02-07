@@ -49,7 +49,7 @@
     </div>
     <!--end::Col-->
     <!--begin::Col-->
-    <div class="col-xl-9">
+    {{-- <div class="col-xl-9">
         <!--begin::Row-->
         <div class="row g-5">
             <div class="col-xl-4">
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <!--end::Col-->
 </div>
 <!--end::Row-->
