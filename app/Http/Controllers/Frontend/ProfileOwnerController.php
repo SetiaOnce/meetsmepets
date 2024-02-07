@@ -572,6 +572,98 @@ class ProfileOwnerController extends Controller
             }
         }
     }
+    public function updatePets(Request $request)
+    {
+        $userSesIdp = Auth::guard('owner')->user()->id;
+        $idp = $request->id;
+        $errors					= [];
+        DB::beginTransaction();
+        $validator = Validator::make($request->all(), [
+            'category' => 'required',
+            'breed' => 'required|max:100',
+            'imageUpload' => 'mimes:png,jpg,jpeg|max:2048',
+            'imageUpload2' => 'mimes:png,jpg,jpeg|max:2048',
+            'imageUpload3' => 'mimes:png,jpg,jpeg|max:2048',
+            'imageUpload4' => 'mimes:png,jpg,jpeg|max:2048',
+            'imageUpload5' => 'mimes:png,jpg,jpeg|max:2048',
+            'imageUpload6' => 'mimes:png,jpg,jpeg|max:2048',
+        ],[
+            'imageUpload.max' => 'Max file is 2MB.',
+            'imageUpload.mimes' => 'File extension is jpg jepg png.',
+            'imageUpload2.max' => 'Max file is 2MB.',
+            'imageUpload2.mimes' => 'File extension is jpg jepg png.',
+            'imageUpload3.max' => 'Max file is 2MB.',
+            'imageUpload3.mimes' => 'File extension is jpg jepg png.',
+            'imageUpload4.max' => 'Max file is 2MB.',
+            'imageUpload4.mimes' => 'File extension is jpg jepg png.',
+            'imageUpload5.max' => 'Max file is 2MB.',
+            'imageUpload5.mimes' => 'File extension is jpg jepg png.',
+            'imageUpload6.max' => 'Max file is 2MB.',
+            'imageUpload6.mimes' => 'File extension is jpg jepg png.',
+        ]);
+        if($validator->fails()){
+            foreach ($validator->errors()->getMessages() as $item) {
+                $errors[] = $item;
+            }
+            return Shortcut::jsonResponse(false, 'Validation errror', 200, $errors);
+        }else{
+            try {
+                $destinationPath = public_path('/dist/img/pets-img');
+                $data = [
+                    'category' => $request->category,
+                    'breed' => strtoupper($request->breed),
+                    'fid_owner' => $userSesIdp,
+                    'updated_at' => Carbon::now()
+                ];
+                if(!empty($_FILES['imageUpload']['name']) ||
+                    !empty($_FILES['imageUpload2']['name']) ||
+                    !empty($_FILES['imageUpload3']['name']) ||
+                    !empty($_FILES['imageUpload4']['name']) ||
+                    !empty($_FILES['imageUpload5']['name']) ||
+                    !empty($_FILES['imageUpload6']['name'])
+                ) {             
+                    //Image 1
+                    if(!empty($_FILES['imageUpload']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload'), $destinationPath, 'imageUpload');
+                        $data['image1'] = $doUploadFile['file_name'];
+                    }
+                    //Image 2
+                    if(!empty($_FILES['imageUpload2']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload2'), $destinationPath, 'imageUpload2');
+                        $data['image2'] = $doUploadFile['file_name'];
+                    }
+                    //Image 3
+                    if(!empty($_FILES['imageUpload3']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload3'), $destinationPath, 'imageUpload3');
+                        $data['image3'] = $doUploadFile['file_name'];
+                    }
+                    //Image 4
+                    if(!empty($_FILES['imageUpload4']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload4'), $destinationPath, 'imageUpload4');
+                        $data['image4'] = $doUploadFile['file_name'];
+                    }
+                    //Image 5
+                    if(!empty($_FILES['imageUpload5']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload5'), $destinationPath, 'imageUpload5');
+                        $data['image5'] = $doUploadFile['file_name'];
+                    }
+                    //Image 6
+                    if(!empty($_FILES['imageUpload6']['name'])){
+                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload6'), $destinationPath, 'imageUpload6');
+                        $data['image6'] = $doUploadFile['file_name'];
+                    }
+                }
+                Pets::whereId($idp)->update($data);
+                DB::commit();
+                return Shortcut::jsonResponse(true, 'Save pets succeed', 200, $data);
+            } catch (Exception $exception) {
+                DB::rollBack();
+                return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
+                    "Trace" => $exception->getTrace()
+                ]);
+            }
+        }
+    }
 
     
     /**
