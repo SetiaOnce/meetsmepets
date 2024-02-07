@@ -1,3 +1,6 @@
+"use strict";
+//Class Definition
+var save_method;
 //Owner INFO
 const _loadOwnerProfile = () => {
 	$.ajax({
@@ -33,6 +36,26 @@ function loadSelectpicker_interest() {
                 output += '<option value="' + data[i].id + '">' + data[i].text + '</option>';
             }
             $('#interest').html(output).selectpicker('refresh').selectpicker('val', '');
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log('Load data is error');
+        }
+    });
+}
+// slectpicker category
+function loadSelectpicker_category() {
+    $.ajax({
+        url: base_url+ "api/select/category",
+        type: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            var data = data.row;
+            var output = '';
+            var i;
+            for (i = 0; i < data.length; i++) {
+                output += '<option value="' + data[i].id + '">' + data[i].text + '</option>';
+            }
+            $('#category').html(output).selectpicker('refresh').selectpicker('val', '');
         },
         error: function (jqXHR, textStatus, errorThrown) {
             console.log('Load data is error');
@@ -177,36 +200,36 @@ $('#foto_profiles').on('change', function() {
     });
 });
 // Pet album save
-$('.imageUpload').on('change', function() {
-    var formData = new FormData($('#form-images')[0]);
-    $.ajax({
-        url: base_url+ "api/profile/save_petsimages",
-        headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
-        type: "POST",
-        data: formData,
-        contentType: false,
-        processData: false,
-        dataType: "JSON",
-        success: function (data) {
-            console.log(data);
-            if (data.status==true){
-                $('.imageUpload').val('');
-            }else{
-                if(data.row[0]) {   
-                    Swal.fire({title: "Ooops!", text: data.row[0], icon: "warning", allowOutsideClick: false});
-                    _loadPetsAlbum();
-                } else {
-                    Swal.fire("Ooops!", "Failed to process the data, please check the fields again on the form provided.", "error");
-                }
-            }
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            Swal.fire({title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, mohon hubungi pengembang!", icon: "error", allowOutsideClick: false}).then(function (result) {
-                location.reload(true);
-            });
-        }
-    });
-});
+// $('.imageUpload').on('change', function() {
+//     var formData = new FormData($('#form-images')[0]);
+//     $.ajax({
+//         url: base_url+ "api/profile/save_petsimages",
+//         headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+//         type: "POST",
+//         data: formData,
+//         contentType: false,
+//         processData: false,
+//         dataType: "JSON",
+//         success: function (data) {
+//             console.log(data);
+//             if (data.status==true){
+//                 $('.imageUpload').val('');
+//             }else{
+//                 if(data.row[0]) {   
+//                     Swal.fire({title: "Ooops!", text: data.row[0], icon: "warning", allowOutsideClick: false});
+//                     _loadPetsAlbum();
+//                 } else {
+//                     Swal.fire("Ooops!", "Failed to process the data, please check the fields again on the form provided.", "error");
+//                 }
+//             }
+//         },
+//         error: function (jqXHR, textStatus, errorThrown) {
+//             Swal.fire({title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, mohon hubungi pengembang!", icon: "error", allowOutsideClick: false}).then(function (result) {
+//                 location.reload(true);
+//             });
+//         }
+//     });
+// });
 // interest
 $('#interest').change(function(){
     $.ajax({
@@ -231,18 +254,121 @@ $('#interest').change(function(){
         }
     });
 });
-// Add pets
+
+//Close Content Card by Open Method
+const _closeModal = (card) => {
+    if(card=='form_pets') {
+        save_method = '';
+        _clearFormPets(), $('#ModalPets .modal-title').html('');
+    }
+    $('#ModalPets').modal('hide');
+}
+//Clear Form Pets
+const _clearFormPets = () => {
+    if (save_method == "" || save_method == "add_pets") {
+        $("#form-pets")[0].reset(), $('[name="id"]').val("");
+        $('.imagePreview').css('background-image', 'url('+base_url+'dist/img/drop-bx.png)');
+    } else {
+        let idp = $('[name="id"]').val();
+        _editPets(idp);
+    }
+}
+// Add Pets
 const _addPets = () => {
-    // save_method = "add_pets";
-    // _clearFormUser(),
+    save_method = "add_pets";
+    _clearFormPets(),
     $("#ModalPets .modal-title").html(
-        `<h3 class="fw-bolder fs-6 text-gray-900"><i class="fa fa-plus fs-2 text-gray-900 align-middle me-2"></i>Form Tambah User</h3>`
+        `<h3 class="fw-bolder fs-6 text-gray-900"><i class="fa fa-plus fs-2 text-gray-900 align-middle me-2"></i>Form Add Pets</h3>`
     ),
     $('#ModalPets').modal('show');
 }
+//Save Pets Form
+$("#btn-savePets").on("click", function (e) {
+    e.preventDefault();
+    $('#btn-savePets').html('Please Wait...').attr('disabled', true);
+    let category = $("#category"), breed = $("#breed");
+
+    if (category.val() == "") {
+        toastr.error('Select the pets category', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        category.focus();
+        $("#btn-savePets").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+        return false;
+    }if (breed.val() == "") {
+        toastr.error('Enter the pets breed', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        breed.focus();
+        $("#btn-savePets").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+        return false;
+    }
+
+    let textConfirmSave = "Save pet changes now ?";
+    if (save_method == "add_pets") {
+        textConfirmSave = "Add pet now ?";
+    }
+
+    Swal.fire({
+        title: "",
+        text: textConfirmSave,
+        icon: "question",
+        showCancelButton: true,
+        allowOutsideClick: false,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+    }).then((result) => {
+        if (result.value) {
+            let formData = new FormData($("#form-pets")[0]), ajax_url = base_url+ "api/profile/save_pets";
+            if(save_method == 'update_pets') {
+                ajax_url = base_url+ "api/profile/update_pets";
+            }
+            $.ajax({
+                url: ajax_url,
+                headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
+                type: "POST",
+                data: formData,
+                contentType: false,
+                processData: false,
+                dataType: "JSON",
+                success: function (data) {
+                    $("#btn-save").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+                    if (data.status == true) {
+                        Swal.fire({
+                            title: "Success!",
+                            text: data.message,
+                            icon: "success",
+                            allowOutsideClick: false,
+                        }).then(function (result) {
+                            _closeModal('form_pets');
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Ooops!",
+                            html: data.message,
+                            icon: "warning",
+                            allowOutsideClick: false,
+                        }).then(function (result) {
+                            if (data.row.error_code == "username_available") {
+                                username.focus();
+                            } if (data.row.error_code == "email_available") {
+                                email.focus();
+                            }
+                        });
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) {
+                    $("#btn-save").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+                    Swal.fire({
+                        title: "Ooops!",
+                        text: "Terjadi kesalahan yang tidak diketahui, Periksa koneksi jaringan internet lalu coba kembali. Mohon hubungi pengembang jika masih mengalami masalah yang sama.",
+                        icon: "error",
+                        allowOutsideClick: false,
+                    });
+                }
+            });
+        } else {
+            $("#btn-save").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+        }
+    });
+});
 // Class Initialization
 jQuery(document).ready(function() {
-    loadSelectpicker_interest();
-    _loadDropifyFile('', '#foto_profiles');
+    loadSelectpicker_interest(), loadSelectpicker_category(), _loadDropifyFile('', '#foto_profiles');
     _loadOwnerProfile(), _loadPetsAlbum();
 });
