@@ -266,16 +266,31 @@ class ProfileOwnerController extends Controller
     public function loadPets()
     {
         $userSesIdp = Auth::guard('owner')->user()->id;
-        $getRow = PetsAlbum::whereFidOwner($userSesIdp)->first();
-        if($getRow){
-            $getRow->image1_url = $this->_checkExistImage($getRow->image1);
-            $getRow->image2_url = $this->_checkExistImage($getRow->image2);
-            $getRow->image3_url = $this->_checkExistImage($getRow->image3);
-            $getRow->image4_url = $this->_checkExistImage($getRow->image4);
-            $getRow->image5_url = $this->_checkExistImage($getRow->image5);
-            $getRow->image6_url = $this->_checkExistImage($getRow->image6);
+        $getRow = Pets::whereFidOwner($userSesIdp)->orderByDesc('id')->get();
+        $data = [];
+        foreach($getRow as $row){
+            $image_url = asset('dist/img/drop-bx.png');
+            if($row->image1 != null){
+                $image_url = $this->_checkExistImage($row->image1);
+            }else if($row->image2 != null){
+                $image_url = $this->_checkExistImage($row->image2);
+            }else if($row->image3 != null){
+                $image_url = $this->_checkExistImage($row->image3);
+            }else if($row->image4 != null){
+                $image_url = $this->_checkExistImage($row->image4);
+            }else if($row->image5 != null){
+                $image_url = $this->_checkExistImage($row->image5);
+            }else if($row->image6 != null){
+                $image_url = $this->_checkExistImage($row->image6);
+            }
+            $data[] = [
+                'id' => $row->id,
+                'category' => $row->category,
+                'breed' => $row->breed,
+                'image_url' =>  $image_url,
+            ];
         }
-        return Shortcut::jsonResponse(true, 'Success', 200, $getRow);
+        return Shortcut::jsonResponse(true, 'Success', 200, $data);
     }
     public function saveFullName(Request $request)
     {
@@ -339,126 +354,6 @@ class ProfileOwnerController extends Controller
             }
         }
     }
-    public function savePetsImgae(Request $request)
-    {
-        $userSesIdp = Auth::guard('owner')->user()->id;
-        $errors					= [];
-        DB::beginTransaction();
-        $validator = Validator::make($request->all(), [
-            'imageUpload' => 'mimes:png,jpg,jpeg|max:2048',
-            'imageUpload2' => 'mimes:png,jpg,jpeg|max:2048',
-            'imageUpload3' => 'mimes:png,jpg,jpeg|max:2048',
-            'imageUpload4' => 'mimes:png,jpg,jpeg|max:2048',
-            'imageUpload5' => 'mimes:png,jpg,jpeg|max:2048',
-            'imageUpload6' => 'mimes:png,jpg,jpeg|max:2048',
-        ],[
-            'imageUpload.max' => 'Max file is 2MB.',
-            'imageUpload.mimes' => 'File extension is jpg jepg png.',
-            'imageUpload2.max' => 'Max file is 2MB.',
-            'imageUpload2.mimes' => 'File extension is jpg jepg png.',
-            'imageUpload3.max' => 'Max file is 2MB.',
-            'imageUpload3.mimes' => 'File extension is jpg jepg png.',
-            'imageUpload4.max' => 'Max file is 2MB.',
-            'imageUpload4.mimes' => 'File extension is jpg jepg png.',
-            'imageUpload5.max' => 'Max file is 2MB.',
-            'imageUpload5.mimes' => 'File extension is jpg jepg png.',
-            'imageUpload6.max' => 'Max file is 2MB.',
-            'imageUpload6.mimes' => 'File extension is jpg jepg png.',
-        ]);
-        if($validator->fails()){
-            foreach ($validator->errors()->getMessages() as $item) {
-                $errors[] = $item;
-            }
-            return Shortcut::jsonResponse(false, 'Validation errror', 200, $errors);
-        }else{
-            try {
-                $album = PetsAlbum::whereFidOwner($userSesIdp)->first();
-                $destinationPath = public_path('/dist/img/pets-img');
-                $data = [];
-                if(!empty($_FILES['imageUpload']['name']) ||
-                    !empty($_FILES['imageUpload2']['name']) ||
-                    !empty($_FILES['imageUpload3']['name']) ||
-                    !empty($_FILES['imageUpload4']['name']) ||
-                    !empty($_FILES['imageUpload5']['name']) ||
-                    !empty($_FILES['imageUpload6']['name'])
-                ) {             
-                    //Image 1
-                    if(!empty($_FILES['imageUpload']['name'])){
-                        if($album==true) {
-                            $get_imageUpload = $destinationPath.'/'.$album->image1;
-                            if(file_exists($get_imageUpload) && $album->image1)
-                                unlink($get_imageUpload);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload'), $destinationPath, 'imageUpload');
-                        $data['image1'] = $doUploadFile['file_name'];
-                    }
-                    //Image 2
-                    if(!empty($_FILES['imageUpload2']['name'])){
-                        if($album==true) {
-                            $get_imageUpload2 = $destinationPath.'/'.$album->image2;
-                            if(file_exists($get_imageUpload2) && $album->image2)
-                                unlink($get_imageUpload2);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload2'), $destinationPath, 'imageUpload2');
-                        $data['image2'] = $doUploadFile['file_name'];
-                    }
-                    //Image 3
-                    if(!empty($_FILES['imageUpload3']['name'])){
-                        if($album==true) {
-                            $get_imageUpload3 = $destinationPath.'/'.$album->image3;
-                            if(file_exists($get_imageUpload3) && $album->image3)
-                                unlink($get_imageUpload3);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload3'), $destinationPath, 'imageUpload3');
-                        $data['image3'] = $doUploadFile['file_name'];
-                    }
-                    //Image 4
-                    if(!empty($_FILES['imageUpload4']['name'])){
-                        if($album==true) {
-                            $get_imageUpload4 = $destinationPath.'/'.$album->image4;
-                            if(file_exists($get_imageUpload4) && $album->image4)
-                                unlink($get_imageUpload4);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload4'), $destinationPath, 'imageUpload4');
-                        $data['image4'] = $doUploadFile['file_name'];
-                    }
-                    //Image 5
-                    if(!empty($_FILES['imageUpload5']['name'])){
-                        if($album==true) {
-                            $get_imageUpload5 = $destinationPath.'/'.$album->image5;
-                            if(file_exists($get_imageUpload5) && $album->image5)
-                                unlink($get_imageUpload5);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload5'), $destinationPath, 'imageUpload5');
-                        $data['image5'] = $doUploadFile['file_name'];
-                    }
-                    //Image 6
-                    if(!empty($_FILES['imageUpload6']['name'])){
-                        if($album==true) {
-                            $get_imageUpload6 = $destinationPath.'/'.$album->image6;
-                            if(file_exists($get_imageUpload6) && $album->image6)
-                                unlink($get_imageUpload6);
-                        }
-                        $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload6'), $destinationPath, 'imageUpload6');
-                        $data['image6'] = $doUploadFile['file_name'];
-                    }
-                }
-                if($album==true){
-                    PetsAlbum::whereFidOwner($userSesIdp)->update($data);
-                }else{
-                    $data['fid_owner'] = $userSesIdp;
-                    $insertUser = PetsAlbum::insertGetId($data);
-                }
-                DB::commit();
-                return Shortcut::jsonResponse(true, 'Success', 200, $data);
-            } catch (Exception $exception) {
-                DB::rollBack();
-                return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
-                    "Trace" => $exception->getTrace()
-                ]);
-            }
-        }
-    }
     public function saveInterest(Request $request)
     {
         $userSesIdp = Auth::guard('owner')->user()->id;
@@ -481,6 +376,7 @@ class ProfileOwnerController extends Controller
             ]);
         }
     }
+        
     public function savePets(Request $request)
     {
         $userSesIdp = Auth::guard('owner')->user()->id;
@@ -572,6 +468,18 @@ class ProfileOwnerController extends Controller
             }
         }
     }
+    public function editPets(Request $request)
+    {
+        $idp = $request->idp;
+        $getRow = Pets::whereId($idp)->first();
+        $getRow->image1_url = $this->_checkExistImage($getRow->image1);
+        $getRow->image2_url = $this->_checkExistImage($getRow->image2);
+        $getRow->image3_url = $this->_checkExistImage($getRow->image3);
+        $getRow->image4_url = $this->_checkExistImage($getRow->image4);
+        $getRow->image5_url = $this->_checkExistImage($getRow->image5);
+        $getRow->image6_url = $this->_checkExistImage($getRow->image6);
+        return Shortcut::jsonResponse(true, 'Success', 200, $getRow);
+    }
     public function updatePets(Request $request)
     {
         $userSesIdp = Auth::guard('owner')->user()->id;
@@ -607,12 +515,12 @@ class ProfileOwnerController extends Controller
             }
             return Shortcut::jsonResponse(false, 'Validation errror', 200, $errors);
         }else{
+            $getFile = Pets::whereId($idp)->first();
             try {
                 $destinationPath = public_path('/dist/img/pets-img');
                 $data = [
                     'category' => $request->category,
                     'breed' => strtoupper($request->breed),
-                    'fid_owner' => $userSesIdp,
                     'updated_at' => Carbon::now()
                 ];
                 if(!empty($_FILES['imageUpload']['name']) ||
@@ -624,38 +532,68 @@ class ProfileOwnerController extends Controller
                 ) {             
                     //Image 1
                     if(!empty($_FILES['imageUpload']['name'])){
+                        if($getFile==true) {
+                            $get_image1 = $destinationPath.'/'.$getFile->image1;
+                            if(file_exists($get_image1) && $getFile->image1)
+                                unlink($get_image1);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload'), $destinationPath, 'imageUpload');
                         $data['image1'] = $doUploadFile['file_name'];
                     }
                     //Image 2
                     if(!empty($_FILES['imageUpload2']['name'])){
+                        if($getFile==true) {
+                            $get_image2 = $destinationPath.'/'.$getFile->image2;
+                            if(file_exists($get_image2) && $getFile->image2)
+                                unlink($get_image2);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload2'), $destinationPath, 'imageUpload2');
                         $data['image2'] = $doUploadFile['file_name'];
                     }
                     //Image 3
                     if(!empty($_FILES['imageUpload3']['name'])){
+                        if($getFile==true) {
+                            $get_image3 = $destinationPath.'/'.$getFile->image3;
+                            if(file_exists($get_image3) && $getFile->image3)
+                                unlink($get_image3);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload3'), $destinationPath, 'imageUpload3');
                         $data['image3'] = $doUploadFile['file_name'];
                     }
                     //Image 4
                     if(!empty($_FILES['imageUpload4']['name'])){
+                        if($getFile==true) {
+                            $get_image4 = $destinationPath.'/'.$getFile->image4;
+                            if(file_exists($get_image4) && $getFile->image4)
+                                unlink($get_image4);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload4'), $destinationPath, 'imageUpload4');
                         $data['image4'] = $doUploadFile['file_name'];
                     }
                     //Image 5
                     if(!empty($_FILES['imageUpload5']['name'])){
+                        if($getFile==true) {
+                            $get_image5 = $destinationPath.'/'.$getFile->image5;
+                            if(file_exists($get_image5) && $getFile->image5)
+                                unlink($get_image5);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload5'), $destinationPath, 'imageUpload5');
                         $data['image5'] = $doUploadFile['file_name'];
                     }
                     //Image 6
                     if(!empty($_FILES['imageUpload6']['name'])){
+                        if($getFile==true) {
+                            $get_image6 = $destinationPath.'/'.$getFile->image6;
+                            if(file_exists($get_image6) && $getFile->image6)
+                                unlink($get_image6);
+                        }
                         $doUploadFile = $this->_doUploadFileImages($request->file('imageUpload6'), $destinationPath, 'imageUpload6');
                         $data['image6'] = $doUploadFile['file_name'];
                     }
                 }
                 Pets::whereId($idp)->update($data);
                 DB::commit();
-                return Shortcut::jsonResponse(true, 'Save pets succeed', 200, $data);
+                return Shortcut::jsonResponse(true, 'Update pets succeed', 200, $data);
             } catch (Exception $exception) {
                 DB::rollBack();
                 return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
@@ -663,6 +601,34 @@ class ProfileOwnerController extends Controller
                 ]);
             }
         }
+    }
+    public function deletePets(Request $request)
+    {
+        $idp = $request->idp;
+        $getRow = Pets::whereId($idp)->first();
+        $destinationPath = public_path('/dist/img/pets-img');
+        if($getRow==true) {
+            $get_image1 = $destinationPath.'/'.$getRow->image1;
+            if(file_exists($get_image1) && $getRow->image1)
+                unlink($get_image1);
+            $get_image2 = $destinationPath.'/'.$getRow->image2;
+            if(file_exists($get_image2) && $getRow->image2)
+                unlink($get_image2);
+            $get_image3 = $destinationPath.'/'.$getRow->image3;
+            if(file_exists($get_image3) && $getRow->image3)
+                unlink($get_image3);
+            $get_image4 = $destinationPath.'/'.$getRow->image4;
+            if(file_exists($get_image4) && $getRow->image4)
+                unlink($get_image4);
+            $get_image5 = $destinationPath.'/'.$getRow->image5;
+            if(file_exists($get_image5) && $getRow->image5)
+                unlink($get_image5);
+            $get_image6 = $destinationPath.'/'.$getRow->image6;
+            if(file_exists($get_image6) && $getRow->image6)
+                unlink($get_image6);
+        }
+        Pets::whereId($idp)->delete();
+        return Shortcut::jsonResponse(true, 'Delete pet successfully', 200);
     }
 
     
