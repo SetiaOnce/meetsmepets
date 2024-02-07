@@ -52,4 +52,26 @@ class SelectController extends Controller
         ];
         return Shortcut::jsonResponse(true, 'Success', 200, $getRow);
     }
+    public function category(Request $request)
+    {
+        $getRow = [
+            [
+                'id' => 'CAT',
+                'text' => 'Cat',
+            ],
+            [
+                'id' => 'DOG',
+                'text' => 'Dog',
+            ],
+            [
+                'id' => 'BIRD',
+                'text' => 'Bird',
+            ],
+            [
+                'id' => 'FISH',
+                'text' => 'Fish',
+            ],
+        ];
+        return Shortcut::jsonResponse(true, 'Success', 200, $getRow);
+    }
 }
