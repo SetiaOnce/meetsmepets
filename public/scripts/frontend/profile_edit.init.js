@@ -339,18 +339,11 @@ $("#btn-savePets").on("click", function (e) {
                             _closeModal('form_pets');
                         });
                     } else {
-                        Swal.fire({
-                            title: "Ooops!",
-                            html: data.message,
-                            icon: "warning",
-                            allowOutsideClick: false,
-                        }).then(function (result) {
-                            if (data.row.error_code == "username_available") {
-                                username.focus();
-                            } if (data.row.error_code == "email_available") {
-                                email.focus();
-                            }
-                        });
+                        if(data.row[0]) {   
+                            Swal.fire({title: "Ooops!", text: data.row[0], icon: "warning", allowOutsideClick: false});
+                        } else {
+                            Swal.fire("Ooops!", "Failed to process the data, please check the fields again on the form provided.", "error");
+                        }
                     }
                 }, error: function (jqXHR, textStatus, errorThrown) {
                     $("#btn-save").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
