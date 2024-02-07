@@ -30,6 +30,9 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/save_fotoprofiles', 'saveFotoProfiles');
             Route::post('/save_petsimages', 'savePetsImgae');
             Route::post('/save_interest', 'saveInterest');
+
+            Route::post('/save_pets', 'savePets');
+            Route::post('/update_pets', 'savePets');
         });
     });
 });
