@@ -32,7 +32,7 @@
     @include('welcome.partials.style')
 </head>   
 @if (isset($bgGradient) && $bgGradient == 'Y')    
-<body class="primary-gradient" data-theme-color="color-primary-2">
+<body class="theme-dark" data-theme-color="color-primary-2">
 @else
 <body class="bg-white">
 @endif
