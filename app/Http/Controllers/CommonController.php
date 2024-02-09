@@ -5,8 +5,12 @@ namespace App\Http\Controllers;
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
 use App\Models\SiteInfo;
+use App\Models\SuperLike;
+use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -46,5 +50,28 @@ class CommonController extends Controller
         }
         $userInfo->last_login = Shortcut::timeago($userInfo->last_login);
         return Shortcut::jsonResponse(true, 'Success', 200, $userInfo);
+    }
+    public function statusLike(Request $request)
+    {
+        $iduserSesIdp = Auth::guard('owner')->user()->id;  
+        DB::beginTransaction();
+        try {
+            if ($request->like_status == 'Y') {
+                SuperLike::insertGetId([
+                    'fid_owner' => $request->idp_owner,
+                    'like_by' => $iduserSesIdp,
+                    'created_at' => Carbon::now(),
+                ]);
+            }else{
+                SuperLike::whereFidOwner($request->idp_owner)->whereLikeBy($iduserSesIdp)->delete();
+            }
+            DB::commit();
+            return Shortcut::jsonResponse(true, 'Like or unlike successfully', 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
     }
 }
