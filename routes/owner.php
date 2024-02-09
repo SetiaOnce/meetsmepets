@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProfileOwnerController;
 use Illuminate\Support\Facades\Route;
@@ -14,6 +15,13 @@ Route::controller(ProfileOwnerController::class)->group(function () {
 });
 //Api Ajax App
 Route::group(['prefix' => 'api'], function () {
+    // common ajax app
+    Route::controller(CommonController::class)->group(function () {
+        Route::post('/like_owner', 'statusLike');
+    });
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('/near_owner', 'nearOwner');
+    });
     Route::controller(ProfileOwnerController::class)->group(function () {
         Route::group(['prefix' => 'profile'], function () {        
             // profile setting
