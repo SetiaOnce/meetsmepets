@@ -139,6 +139,8 @@ class LoginController extends Controller
         foreach (Cookie::get() as $key => $item){
             $arrayCookie []= cookie($key, null, -2628000, null, null);
         }
+        Cookie::queue(Cookie::forget('phone_number'));
+        Cookie::queue(Cookie::forget('email'));
         $request->session()->invalidate();
         $request->session()->regenerateToken();
         session()->flush();
