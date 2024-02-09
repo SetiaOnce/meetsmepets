@@ -13,7 +13,7 @@
     <div class="welcome-area">
         <div class="welcome-inner flex-column">
             <div class="logo-area">
-                <img class="logo" src="{{ asset('dist/img/site-img/'.$data['siteInfo']['headpublic_logo']) }}" alt="">
+                <img class="logo" src="{{ asset('dist/img/site-img/'.$data['siteInfo']['login_logo']) }}" alt="">
                 <p class="para-title">Join us with other millions of people and find your best matches.</p>
             </div>
             <div class="social-area">
@@ -22,7 +22,7 @@
                     <span>Log In</span>
                 </a>
                 <a href="{{ url('register') }}" class="btn btn-icon icon-start w-100 btn-tp">
-                    <i class="fa fa-pencil"></i>
+                    <i class="fa fa-pencil text-white"></i>
                     <span>Register</span>
                 </a>
             </div>
