@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\StatusOnline;
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
+use App\Models\Owners;
 use App\Models\SiteInfo;
 use App\Models\SuperLike;
 use Carbon\Carbon;
@@ -50,6 +52,23 @@ class CommonController extends Controller
         }
         $userInfo->last_login = Shortcut::timeago($userInfo->last_login);
         return Shortcut::jsonResponse(true, 'Success', 200, $userInfo);
+    }
+    public function updateOnline(Request $request)
+    {
+        $iduserSesIdp = Auth::guard('owner')->user()->id;  
+        try {
+            //Update time last online
+            Owners::where('id', $iduserSesIdp)->update([
+                'last_login' => Carbon::now()->format('Y-m-d H:i:s')
+            ]);
+            // event realtime online
+            event(new StatusOnline(Auth::guard('owner')->user()->name, 'online'));
+            return Shortcut::jsonResponse(true, 'update last online successfully', 200);
+        } catch (Exception $exception) {
+            return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
     }
     public function statusLike(Request $request)
     {
