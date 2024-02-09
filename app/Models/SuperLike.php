@@ -18,7 +18,7 @@ class SuperLike extends Model
      */
     protected $hidden = [
         'id',
-        'updated_at'
+        'created_at'
     ];
 
     public $timestamps = false;
