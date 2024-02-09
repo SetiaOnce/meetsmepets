@@ -1,11 +1,16 @@
 <?php
 
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\Frontend\ChatController;
 use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\LoveController;
 use App\Http\Controllers\Frontend\ProfileOwnerController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [HomeController::class, 'index']);
+Route::get('/love', [LoveController::class, 'index']);
+Route::get('/chat', [ChatController::class, 'index']);
+Route::get('/chat/{id}', [ChatController::class, 'startChat']);
 Route::controller(ProfileOwnerController::class)->group(function () {
     Route::group(['prefix' => 'profile'], function () {        
         Route::get('', 'index');
@@ -17,11 +22,14 @@ Route::controller(ProfileOwnerController::class)->group(function () {
 Route::group(['prefix' => 'api'], function () {
     // common ajax app
     Route::controller(CommonController::class)->group(function () {
+        Route::get('/update_time_online', 'updateOnline');
         Route::post('/like_owner', 'statusLike');
     });
+    // home ajax app
     Route::controller(HomeController::class)->group(function () {
         Route::get('/near_owner', 'nearOwner');
     });
+    // profile ajax app
     Route::controller(ProfileOwnerController::class)->group(function () {
         Route::group(['prefix' => 'profile'], function () {        
             // profile setting
@@ -45,5 +53,12 @@ Route::group(['prefix' => 'api'], function () {
             Route::post('/update_pets', 'updatePets');
             Route::post('/delete_pet', 'deletePets');
         });
+    });
+    // chat ajax app
+    Route::controller(ChatController::class)->group(function () {
+        Route::get('/chat_owner_love', 'ChatLove');
+        Route::get('/all_message', 'allMessage');
+        Route::get('/personal_chat', 'personalChat');
+        Route::post('/send_message', 'sendMessage');
     });
 });
