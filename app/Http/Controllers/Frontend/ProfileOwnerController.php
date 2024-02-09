@@ -62,6 +62,7 @@ class ProfileOwnerController extends Controller
             'dist/assets/vendor/swiper/swiper-bundle.min.css',
             'dist/plugins/toastr/toastr.min.css',
             'dist/plugins/sweetalert2/sweetalert2.min.css',
+            'dist/plugins/leaflet/leaflet.css',
         );
         //Data Source JS
         $data['js'] = array(
@@ -73,6 +74,8 @@ class ProfileOwnerController extends Controller
             'dist/assets/js/noui-slider.init.js',
             'dist/plugins/toastr/toastr.min.js',
             'dist/plugins/sweetalert2/sweetalert2.min.js',
+            'dist/plugins/leaflet/leaflet.js',
+            'dist/plugins/leaflet/leaflet-ajax-gh-pages/dist/leaflet.ajax.min.js',
             'scripts/frontend/siteinfo.init.js',
             'scripts/frontend/profile_setting.init.js',
         );
@@ -193,6 +196,8 @@ class ProfileOwnerController extends Controller
         try {
             Owners::whereId($userSesIdp)->update([
                 'location' => $request->location,
+                'lat' => $request->lat,
+                'lng' => $request->lng,
                 'updated_at' => Carbon::now(),
             ]);
             DB::commit();
