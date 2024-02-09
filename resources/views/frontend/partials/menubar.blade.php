@@ -1,3 +1,6 @@
+@if (isset($pageChat) && $pageChat == 'Y')
+    @yield('footer-chat')
+@else
 <!-- Menubar -->
 <div class="menubar-area style-2 footer-fixed">
     <div class="toolbar-inner menubar-nav">
@@ -5,7 +8,7 @@
             <i class="icon feather icon-user"></i>
             <span>Profile</span>
         </a>
-        <a href="media.html" class="nav-link  {{ strtolower($activeMenu) == strtolower('LOVE') ? 'active' : '' }}">
+        <a href="{{ url('love') }}" class="nav-link  {{ strtolower($activeMenu) == strtolower('LOVE') ? 'active' : '' }}">
             <i class="icon feather icon-heart-on"></i>
             <span>Love</span>
         </a>
@@ -17,10 +20,11 @@
             <i class="icon feather icon-grid"></i>
             <span>Explore</span>
         </a>
-        <a href="components/components.html" class="nav-link  {{ strtolower($activeMenu) == strtolower('CHAT') ? 'active' : '' }}">
+        <a href="{{ url('/chat') }}" class="nav-link  {{ strtolower($activeMenu) == strtolower('CHAT') ? 'active' : '' }}">
             <i class="fa fa-comments"></i>
             <span>Chat</span>
         </a>
     </div>
 </div>
 <!-- Menubar -->
+@endif
