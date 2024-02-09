@@ -89,11 +89,11 @@
 @import url("./../icons/flaticon1/font/flaticon_flaticon1.css");
 @import url("./../icons/themify-icons/css/themify-icons.css");
 :root {
-  --primary: #FF50A2;
-  --primary-light: #ffacd3;
-  --bg-gradient: linear-gradient(0deg, #FE3D96 0%, #FFA4CF 100%);
-  --primary-hover: #ff1d87;
-  --primary-dark: #b60055;
+  --primary: #3B3486;
+  --primary-light: #655bd3;
+  --bg-gradient: linear-gradient(0deg, #0A1D56 0%, #655bd3 100%);
+  --primary-hover: #655bd3;
+  --primary-dark: #0A1D56;
   --secondary: #441D3E;
   --secondary-light: rgba(47, 47, 47, 0.50);
   --rgba-primary-1: rgba(255, 80, 162, 0.1);
@@ -109,7 +109,7 @@
   --font-family-base: Nunito Sans, sans-serif;
   --box-shadow: 0px 2px 8px 0px rgba(99, 99, 99, 0.2);
   --box-shadow2: 0px 3px 12px rgba(0, 0, 0, 0.1);
-  --gradient1: linear-gradient(94deg, #E93E84 14.36%, #F46D8F 42.6%, #FE854E 80.39%);
+  --gradient1: linear-gradient(94deg, #0A1D56 14.36%, #655bd3 42.6%, #9f97f7 80.39%);
   --gradient2: linear-gradient(94deg, #E79E45 22.95%, #EBAF51 42.6%, #DCB554 80.39%);
   --gradient3: linear-gradient(94deg, #0A0B0E 14.36%, #1F242A 42.6%, #37444E 80.39%);
   --border-radius-md: 18px;
@@ -127,7 +127,7 @@
   --light: #E6E6E6;
   --text-accent: #69708A;
   --text-light: #A19FA8;
-  --btn-gradient: linear-gradient(0deg, #FE3D96 0%, #FFA4CF 100%);
+  --btn-gradient: linear-gradient(0deg, #0A1D56 0%, #655bd3 100%);
   --btn-shadow: 0px 24px 30px 0px rgba(255, 63, 152, 0.20); }
 
 /*
@@ -11949,7 +11949,7 @@ section {
       border-radius: 50%;
       transform: translate(-50%, -50%);
       display: none;
-      background: linear-gradient(180deg, #FE77B6 0%, #FF3D97 100%);
+      background: linear-gradient(0deg, #0A1D56 0%, #655bd3 100%);
       box-shadow: 0px 15px 30px 0px rgba(255, 104, 175, 0.3); }
     .menubar-area .menubar-nav .nav-link span {
       font-size: 12px;
@@ -12489,8 +12489,8 @@ section {
     color: #fff; }
   .theme-dark .page-onboading + .footer {
     background-color: #110021; }
-  .theme-dark .welcome-area .join-area:after {
-    background-image: url(../images/bg-shape-dark.png); }
+  /* .theme-dark .welcome-area .join-area:after {
+    background-image: url(../images/bg-shape-dark.png); } */
   .theme-dark .form-control.custom-image-select-2 .dropdown-toggle:after,
   .theme-dark .form-control.custom-image-select-2 .filter-option-inner-inner {
     color: #fff; }
