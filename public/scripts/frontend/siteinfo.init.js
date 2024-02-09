@@ -36,7 +36,22 @@ const _loadUserInfo = () => {
         }
     });
 };
+// Update time online
+const _updateTimeOnline = () => {
+	$.ajax({
+        url: base_url+ "api/update_time_online",
+        type: "GET",
+        dataType: "JSON",
+        success: function (data) {
+            
+        }, error: function (jqXHR, textStatus, errorThrown) {
+            console.log('Load data is error');
+        }
+    });
+}
+// set time interval in 1 meniute
+setInterval(_updateTimeOnline, 60000);
 // Class Initialization
 jQuery(document).ready(function() {
-    _loadSystemInfo(), _loadUserInfo();
+    _loadSystemInfo(), _loadUserInfo(), _updateTimeOnline();
 });
