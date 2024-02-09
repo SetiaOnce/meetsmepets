@@ -267,32 +267,56 @@ class Shortcut {
 		return substr(str_shuffle($str_result),
 						0, $length_of_string);
 	}
-	public static function timeago($timestamp)
+	public static function timeago($datetime)
 	{
-        date_default_timezone_set("Asia/Jakarta");
-		// Set the locale to 'id' for Bahasa Indonesia
-		Carbon::setLocale('id');
-		// Customize the "time ago" translation to match the desired format
-		CarbonInterval::setLocale('id', [
-			'year'      => 'tahun',
-			'month'     => 'bulan',
-			'week'      => 'minggu',
-			'day'       => 'hari',
-			'hour'      => 'jam',
-			'minute'    => 'menit',
-			'second'    => 'detik',
-			'year_ago'      => ':count tahun yang lalu',
-			'month_ago'     => ':count bulan yang lalu',
-			'week_ago'      => ':count minggu yang lalu',
-			'day_ago'       => ':count hari yang lalu',
-			'hour_ago'      => ':count jam yang lalu',
-			'minute_ago'    => ':count menit yang lalu',
-			'second_ago'    => ':count detik yang lalu',
-		]);
-		// Create a Carbon instance from the timestamp
-		$carbonDate = Carbon::parse($timestamp);
-		// Get the "time ago" in Indonesian
-		$timeAgo = $carbonDate->diffForHumans();
-		return $timeAgo;
+        $time_ago     = strtotime($datetime);
+        $current_time = strtotime(date("Y-m-d H:i:s"));
+        $time_difference = $current_time - $time_ago;
+        $seconds      = $time_difference;
+        $minutes      = round($seconds / 60 );           // value 60 is seconds
+        $hours        = round($seconds / 3600);           //value 3600 is 60 minutes * 60 sec
+        $days         = round($seconds / 86400);          //86400 = 24 * 60 * 60;
+        $weeks        = round($seconds / 604800);          // 7*24*60*60;
+        $months       = round($seconds / 2629440);     //((365+365+365+365+366)/5/12)*24*60*60
+        $years        = round($seconds / 31553280);     //(365+365+365+365+366)/5 * 24 * 60 * 60
+        if($seconds <= 60){
+            return "Just now";
+        }else if($minutes <=60){
+            if($minutes==1){
+                return "1 Minutes ago";
+            }else{
+                return $minutes." Minutes ago";
+            }
+        }else if($hours <=24){
+            if($hours==1){
+                return "1 Hours ago";
+            }else{
+                return $hours." Hours ago";
+            }
+        }else if($days <= 7){
+            if($days==1){
+                return "Yesterday";
+            }else{
+                return $days." Days ago";
+            }
+        }else if($weeks <= 4.3){ //4.3 == 52/12
+            if($weeks==1){
+                return "1 Last week";
+            }else{
+                return $weeks." Last week.";
+            }
+        }else if($months <=12){
+            if($months==1){
+                return "1 Last month";
+            }else{
+                return $months." Last month";
+            }
+        }else{
+            if($years==1){
+                return "1 Last year";
+            }else{
+                return $years." Last year";
+            }
+        }
 	}
 }
