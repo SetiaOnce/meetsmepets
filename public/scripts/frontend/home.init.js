@@ -8,7 +8,8 @@ const loadNearOwner = () => {
         data: {
             lat, lng
         },success: function (data) {
-            let dataNearby = data.row, contentNearby;
+            let dataNearby = data.row;
+            let contentNearby = '';
             if(dataNearby.length == 0){
                 // contentNearby += `
                 //     <div class="alert alert-primary solid alert-dismissible fade show">
