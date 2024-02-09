@@ -169,37 +169,6 @@ $('#foto_profiles').on('change', function() {
         }
     });
 });
-// Pet album save
-// $('.imageUpload').on('change', function() {
-//     var formData = new FormData($('#form-images')[0]);
-//     $.ajax({
-//         url: base_url+ "api/profile/save_petsimages",
-//         headers: { 'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content') },
-//         type: "POST",
-//         data: formData,
-//         contentType: false,
-//         processData: false,
-//         dataType: "JSON",
-//         success: function (data) {
-//             console.log(data);
-//             if (data.status==true){
-//                 $('.imageUpload').val('');
-//             }else{
-//                 if(data.row[0]) {   
-//                     Swal.fire({title: "Ooops!", text: data.row[0], icon: "warning", allowOutsideClick: false});
-//                     _loadPetsAlbum();
-//                 } else {
-//                     Swal.fire("Ooops!", "Failed to process the data, please check the fields again on the form provided.", "error");
-//                 }
-//             }
-//         },
-//         error: function (jqXHR, textStatus, errorThrown) {
-//             Swal.fire({title: "Ooops!", text: "Terjadi kesalahan yang tidak diketahui, mohon hubungi pengembang!", icon: "error", allowOutsideClick: false}).then(function (result) {
-//                 location.reload(true);
-//             });
-//         }
-//     });
-// });
 // interest
 $('#interest').change(function(){
     $.ajax({
