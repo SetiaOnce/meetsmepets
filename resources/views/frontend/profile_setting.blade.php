@@ -40,13 +40,15 @@
         <h6 class="title">Discovery Setting</h6>
         <div class="card style-3">
             <div class="card-header">
-                <h6 class="title mb-0 font-14 font-w500">Location</h6>
+                <h6 class="title mb-0 font-14 font-w500">Your Location <br><small><code>*) click the maps to set your location</code></small></h6>
             </div>
             <div class="card-body">
-                <a href="javascript:void(0);" class="setting-input" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom3" aria-controls="offcanvasBottom">
-                    <i class="icon dz-flex-box feather icon-map-pin"></i>
-                    <span class="location">{{ $data['user_session']['location'] }}</span>
-                </a>
+                <div class="container" style="z-index: 1;">
+                    <div id="mapsViewLocation" style="height: 400px;"></div>
+                </div>
+                <input type="hidden" name="address" id="address">
+                <input type="hidden" name="lat" id="lat">
+                <input type="hidden" name="lng" id="lng">
             </div>
         </div>
         <h6 class="title">Other</h6>
@@ -147,27 +149,6 @@
     </div>
 </div>
 <!--  Email OffCanvas -->
-<!--  Location OffCanvas -->
-<div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom3">
-    <button type="button" class="btn-close drage-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    <div class="offcanvas-header share-style m-0 pb-0">
-        <h6 class="title">Location Address</h6>
-    </div>
-    <div class="offcanvas-body">
-        <form>
-            <div class="input-group input-group-icon">
-                <div class="input-group-text">
-                    <div class="input-icon">
-                        <i class="icon feather icon-map-pin"></i>
-                    </div>
-                </div>
-                <input type="text" name="location" id="location" class="form-control" value="{{ $data['user_session']['location'] }}">
-            </div>
-            <a href="javascript:void(0);" id="btn-location" class="btn btn-gradient w-100 dz-flex-box btn-shadow rounded-xl" data-bs-dismiss="offcanvas" aria-label="Close">Save</a>
-        </form>
-    </div>
-</div>
-<!--  Location OffCanvas -->
 <!--  Gender OffCanvas -->
 <div class="offcanvas offcanvas-bottom" tabindex="-1" id="offcanvasBottom4">
     <button type="button" class="btn-close drage-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -201,4 +182,5 @@
     </div>
 </div>
 <!--  Gender OffCanvas -->
+<script>var mapbox_accessToken = "{{ env('MAPBOX_TOKEN') }}";</script>
 @endsection
