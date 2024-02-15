@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\Frontend\ChatController;
+use App\Http\Controllers\Frontend\ExploreController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\LoveController;
 use App\Http\Controllers\Frontend\ProfileOwnerController;
@@ -9,6 +10,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/home', [HomeController::class, 'index']);
 Route::get('/love', [LoveController::class, 'index']);
+Route::get('/explore', [ExploreController::class, 'index']);
+Route::get('/viewpets/{id}', [ExploreController::class, 'viewPets']);
 Route::get('/chat', [ChatController::class, 'index']);
 Route::get('/chat/{id}', [ChatController::class, 'startChat']);
 Route::controller(ProfileOwnerController::class)->group(function () {
@@ -24,15 +27,28 @@ Route::group(['prefix' => 'api'], function () {
     Route::controller(CommonController::class)->group(function () {
         Route::get('/update_time_online', 'updateOnline');
         Route::post('/like_owner', 'statusLike');
+        Route::post('/like_pets', 'statusPets');
     });
     // home ajax app
     Route::controller(HomeController::class)->group(function () {
         Route::get('/near_owner', 'nearOwner');
     });
+    // love
+    Route::controller(LoveController::class)->group(function () {
+        Route::get('/load_data_filter', 'dataFilter');
+        Route::post('/save_filter_data', 'saveFilter');
+        Route::post('/pets_populer', 'petsPupuler');
+        Route::post('/pets_allcontent', 'petsAll');
+    });
+    // explore
+    Route::controller(ExploreController::class)->group(function () {
+        Route::get('/explore_pets', 'data');
+    });
     // profile ajax app
     Route::controller(ProfileOwnerController::class)->group(function () {
         Route::group(['prefix' => 'profile'], function () {        
             // profile setting
+            Route::post('/update_subscribe', 'updateSubscribe');
             Route::post('/save_username', 'saveUsername');
             Route::post('/save_phonenumber', 'savePhone');
             Route::post('/save_email', 'saveEmail');
