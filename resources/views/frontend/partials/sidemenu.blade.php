@@ -24,7 +24,7 @@
 
         <ul class="nav navbar-nav">	
             <li>
-                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('HOME') ? 'active' : '' }}" href="home.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('HOME') ? 'active' : '' }}" href="{{ url('/home') }}">
                     <span class="dz-icon">
                         <i class="icon feather icon-home"></i>
                     </span>
@@ -32,7 +32,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('LOVE') ? 'active' : '' }}" href="../package.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('LOVE') ? 'active' : '' }}" href="{{ url('/love') }}">
                     <span class="dz-icon">
                         <i class="icon feather icon-heart-on"></i>
                     </span>
@@ -40,7 +40,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('EXPLORE') ? 'active' : '' }}" href="../package.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('EXPLORE') ? 'active' : '' }}" href="{{ url('/explore') }}">
                     <span class="dz-icon">
                         <i class="icon feather icon-grid"></i>
                     </span>
@@ -48,7 +48,7 @@
                 </a>
             </li>
             <li>
-                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('CHAT') ? 'active' : '' }}" href="../package.html">
+                <a class="nav-link  {{ strtolower($activeMenu) == strtolower('CHAT') ? 'active' : '' }}" href="{{ url('/chat') }}">
                     <span class="dz-icon">
                         <i class="fa fa-comments"></i>
                     </span>
