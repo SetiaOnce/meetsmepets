@@ -49,7 +49,7 @@
     </div>
     <!--end::Col-->
     <!--begin::Col-->
-    {{-- <div class="col-xl-9">
+    <div class="col-xl-9">
         <!--begin::Row-->
         <div class="row g-5">
             <div class="col-xl-4">
@@ -59,10 +59,10 @@
                             <span class="ms-n1">
                                 <i class="text-white ki-outline ki-profile-user fs-3x"></i>
                             </span>
-                            <div class="text-white fw-bold fs-1" id="countPegawaiAsn">0</div>
+                            <div class="text-white fw-bold fs-1" id="countUsers">0</div>
                         </div>
                         <div class="fw-semibold text-white">
-                            PEGAWAI ASN
+                            USERS
                         </div>
                     </div>
                 </div>
@@ -72,12 +72,12 @@
                     <div class="card-body py-3 px-5">
                         <div class="d-flex flex-stack align-items-center mb-3">
                             <span class="ms-n1">
-                                <i class="text-white ki-outline ki-profile-user fs-3x"></i>
+                                <i class="text-white ki-solid ki-abstract-30 fs-3x"></i>
                             </span>        
-                            <div class="text-white fw-bold fs-1" id="countPegawaiHonorer">0</div>
+                            <div class="text-white fw-bold fs-1" id="countHewanPeliharaan">0</div>
                         </div>
                         <div class="fw-semibold text-white">
-                            PEGAWAI HONORER
+                            HEWAN PELIHARAAN
                         </div>
                     </div>
                 </div>
@@ -87,18 +87,18 @@
                     <div class="card-body py-3 px-5">
                         <div class="d-flex flex-stack align-items-center mb-3">
                             <span class="ms-n1">
-                                <i class="text-white ki-duotone ki-security-user fs-3x"><span class="path1"></span><span class="path2"></span></i>
+                                <i class="text-white ki-solid ki-notification-on fs-3x"></i>
                             </span>        
-                            <div class="text-white fw-bold fs-1" id="countPegawaiPengelola">0</div>
+                            <div class="text-white fw-bold fs-1" id="countSubscribers">0</div>
                         </div>
                         <div class="fw-semibold text-white">
-                            PENGELOLA PORTAL
+                            SUBSCRIBERS
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
     <!--end::Col-->
 </div>
 <!--end::Row-->
