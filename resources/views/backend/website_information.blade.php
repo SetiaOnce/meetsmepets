@@ -56,6 +56,14 @@
             <!--end::Input group-->
             <!--begin::Input group-->
             <div class="row mb-6">
+                <label class="col-lg-4 col-form-label required fw-bold fs-6" for="login_desc">Login Deskripsi Pendek</label>
+                <div class="col-lg-8">
+                    <textarea name="login_desc" id="login_desc" class="form-control form-control-solid mb-3 mb-lg-0" rows="2" maxlength="250" placeholder="Isikan deskripsi singkat login ..."></textarea>
+                </div>
+            </div>
+            <!--end::Input group-->
+            <!--begin::Input group-->
+            <div class="row mb-6">
                 <label class="col-lg-4 col-form-label required fw-bold fs-6">Logo Header Publik</label>
                 <div class="col-lg-8">
                     <div class="row">
