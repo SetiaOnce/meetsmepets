@@ -82,6 +82,7 @@ const _loadEditSiteInfo = () => {
             $('#name').val(data.row.name),
             $('#short_name').val(data.row.short_name),
             $('#description').val(data.row.description);
+            $('#login_desc').val(data.row.login_desc);
             //Keyword System
             let selected = '', i;
             for (i = 0; i < data.keyword_explode.length; i++) {
@@ -122,6 +123,7 @@ $('#btn-saveSiteInfo').on('click', function (e) {
     let name = $('#name'),
         short_name = $('#short_name'),
         description = $('#description'),
+        login_desc = $('#login_desc'),
         keyword = $('#keyword'),
         copyright = $('#copyright'),
         headpublic_logo = $('#headpublic_logo'), headpublic_logo_preview = $('#iGroup-headpublic_logo .dropify-preview .dropify-render').html(),
@@ -155,6 +157,11 @@ $('#btn-saveSiteInfo').on('click', function (e) {
     } if (copyright.summernote('isEmpty')) {
         toastr.error('Copyright situs masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
         copyright.summernote('focus');
+        $('#btn-saveSiteInfo').removeAttr('data-kt-indicator').attr('disabled', false);
+        return false;
+    } if (login_desc.val() == '') {
+        toastr.error('Deskripsi singkat login masih kosong...', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        login_desc.focus();
         $('#btn-saveSiteInfo').removeAttr('data-kt-indicator').attr('disabled', false);
         return false;
     } if (headpublic_logo_preview == '') {
