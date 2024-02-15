@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\StatusOnline;
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
+use App\Models\LikePets;
 use App\Models\Owners;
 use App\Models\SiteInfo;
 use App\Models\SuperLike;
@@ -86,6 +87,30 @@ class CommonController extends Controller
             }
             DB::commit();
             return Shortcut::jsonResponse(true, 'Like or unlike successfully', 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
+    }
+    public function statusPets(Request $request)
+    {
+        $iduserSesIdp = Auth::guard('owner')->user()->id;  
+        DB::beginTransaction();
+        try {
+            if ($request->like_status == 'Y') {
+                LikePets::insertGetId([
+                    'fid_pets' => $request->fid_pets,
+                    'like_by' => $iduserSesIdp,
+                    'created_at' => Carbon::now(),
+                ]);
+            }else{
+                LikePets::whereFidPets($request->fid_pets)->whereLikeBy($iduserSesIdp)->delete();
+            }
+            DB::commit();
+            $totalLike = LikePets::whereFidPets($request->fid_pets)->whereLikeBy($iduserSesIdp)->count();
+            return Shortcut::jsonResponse(true, 'Like or unlike successfully', 200, $totalLike);
         } catch (Exception $exception) {
             DB::rollBack();
             return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
