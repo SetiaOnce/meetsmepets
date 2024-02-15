@@ -15,4 +15,5 @@
     </div>    
 </div>
 <!-- Page Content End -->
+<script>var my_id = "{{ $data['user_session']['id'] }}";</script>
 @endsection
