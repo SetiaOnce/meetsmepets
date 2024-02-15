@@ -93,7 +93,7 @@ const _loadAllMessage = () => {
 // Realtime status online 
 const _realtimeStatusOnline = () => {
     // realtime online status
-    Pusher.logToConsole = true;
+    Pusher.logToConsole = false;
     var pusher = new Pusher('776e717ca68fa5373ae0', {
         cluster: 'ap1'
     });
@@ -102,7 +102,21 @@ const _realtimeStatusOnline = () => {
         console.log(data);
     });
 }
+// Realtime chat
+const realtimeChat = () => {
+    // realtime online status
+    Pusher.logToConsole = false;
+    var pusher = new Pusher('776e717ca68fa5373ae0', {
+        cluster: 'ap1'
+    });
+    var channel2 = pusher.subscribe('chat-personal');
+    channel2.bind('App\\Events\\ChatPersonal', function(data) {
+        if(data.from_user == parseFloat(my_id)){
+            _loadAllMessage();
+        }
+    });
+}
 // Class Initialization
 jQuery(document).ready(function() {
-    _loadOwnerLove(), _loadAllMessage(), _realtimeStatusOnline();
+    _loadOwnerLove(), _loadAllMessage(), _realtimeStatusOnline(), realtimeChat();
 });
