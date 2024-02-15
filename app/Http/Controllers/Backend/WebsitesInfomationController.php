@@ -132,6 +132,7 @@ class WebsitesInfomationController extends Controller
                 'name' => $request->input('name'),
                 'short_name' => $request->input('short_name'),
                 'description' => $request->input('description'),
+                'login_desc' => $request->input('login_desc'),
                 'keyword' => $keyword,
                 'copyright' => urldecode(urldecode($request->copyright)),
                 'user_updated' => Auth::user()->nama_pegawai,
