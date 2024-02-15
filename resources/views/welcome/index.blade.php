@@ -14,7 +14,7 @@
         <div class="welcome-inner flex-column">
             <div class="logo-area">
                 <img class="logo" src="{{ asset('dist/img/site-img/'.$data['siteInfo']['login_logo']) }}" alt="">
-                <p class="para-title">Join us with other millions of people and find your best matches.</p>
+                <p class="para-title">{{ $data['siteInfo']['login_desc'] }}</p>
             </div>
             <div class="social-area">
                 <a href="{{ url('auth') }}" class="btn btn-icon icon-start w-100 btn-facebook">
