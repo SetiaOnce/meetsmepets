@@ -16,7 +16,7 @@
             <i class="fa-solid fa-house"></i>
             <span>Home</span>
         </a>
-        <a href="pages.html" class="nav-link  {{ strtolower($activeMenu) == strtolower('EXPLORE') ? 'active' : '' }}">
+        <a href="{{ url('/explore') }}" class="nav-link  {{ strtolower($activeMenu) == strtolower('EXPLORE') ? 'active' : '' }}">
             <i class="icon feather icon-grid"></i>
             <span>Explore</span>
         </a>
