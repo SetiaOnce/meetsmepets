@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Backend;
 
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
+use App\Models\Owners;
+use App\Models\Pets;
 use App\Models\SiteInfo;
+use App\Models\Subscribers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,6 +47,11 @@ class DashboardController extends Controller
         $userInfo->thumb_url = asset('dist/img/users-img/'.$userInfo->thumb);
         $response = array(
             'userProfle' => $userInfo,
+            'counter' => [
+                'users' => Owners::all()->count(),
+                'pets' => Pets::all()->count(),
+                'subcribers' => Subscribers::all()->count(),
+            ]
         );
         return response()->json($response);
     }
