@@ -55,6 +55,21 @@ class ChatController extends Controller
     {
         $getSiteInfo = SiteInfo::whereId(1)->first();
         $getUserSession = Auth::guard('owner')->user();
+        $iduserSesIdp = Auth::guard('owner')->user()->id;
+        // get key chat for check
+        $check = Chat::where(function ($query) use ($iduserSesIdp, $owner_id) {
+            $query->where('from', $iduserSesIdp)
+            ->where('to', $owner_id);
+        })
+        ->orWhere(function ($query) use ($iduserSesIdp, $owner_id) {
+            $query->where('from', $owner_id)
+            ->where('to', $iduserSesIdp);
+        })
+        ->first();
+        $keyChat = md5(uniqid());
+        if(!empty($check)){
+            $keyChat = $check->key_chat;
+        }
         // owner chat info
         $owner = Owners::whereId($owner_id)->first();
         $file_name = $owner->thumb;
@@ -75,7 +90,8 @@ class ChatController extends Controller
             'app_version' => config('app.version'),
             'app_name' => $getSiteInfo->short_name,
             'user_session' => $getUserSession,
-            'owner_info' => $owner
+            'owner_info' => $owner,
+            'key_chat' => $keyChat,
         );
         //Data Source CSS
         $data['css'] = array(
@@ -226,7 +242,7 @@ class ChatController extends Controller
             $personalMessage[] = [
                 'id' => $row->id,
                 'message' => $row->message,
-                'last_chat' => Shortcut::timeago($row->created_at),
+                'timechat' => date("H:i", strtotime($row->created_at)),
                 'is_me' => $isMe,
             ];
         }
@@ -238,14 +254,29 @@ class ChatController extends Controller
         $idpOtherOwner = $request->idp_owner;
         DB::beginTransaction();
         try {
+            // get key chat for check
+            $check = Chat::where(function ($query) use ($iduserSesIdp, $idpOtherOwner) {
+                $query->where('from', $iduserSesIdp)
+                      ->where('to', $idpOtherOwner);
+            })
+            ->orWhere(function ($query) use ($iduserSesIdp, $idpOtherOwner) {
+                $query->where('from', $idpOtherOwner)
+                      ->where('to', $iduserSesIdp);
+            })
+            ->first();
+            $keyChat = $request->key_chat;
+            if(!empty($check)){
+                $keyChat = $check->key_chat;
+            }
             Chat::insertGetId([
                 'from' => $iduserSesIdp,
                 'to' => $idpOtherOwner,
                 'message' => $request->message,
+                'key_chat' => $keyChat,
                 'created_at' => Carbon::now(),
             ]);
             DB::commit();
-            event(new ChatPersonal(Auth::guard('owner')->user()->id, $request->message));
+            event(new ChatPersonal(Auth::guard('owner')->user()->id, $idpOtherOwner, $keyChat, $request->message));
             return Shortcut::jsonResponse(true, 'Like or unlike successfully', 200);
         } catch (Exception $exception) {
             DB::rollBack();
