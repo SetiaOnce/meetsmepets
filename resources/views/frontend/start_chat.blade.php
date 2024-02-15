@@ -18,21 +18,21 @@
                     <h6 class="title">{{ $data['owner_info']['name'] }}</h6>
                     <span>
                         @if ($data['owner_info']['last_login'] == 'Just now')
-                            Online
+                            online
                         @else
                             {{ $data['owner_info']['last_login'] }}
                         @endif
                     </span>
                 </div>	
             </div>
-            <div class="right-content d-flex align-items-center">
+            {{-- <div class="right-content d-flex align-items-center">
                 <a href="javascript:void(0);" class="dz-icon btn btn-primary light">
                     <i class="fa-solid fa-phone"></i>
                 </a>
                 <a href="javascript:void(0);" class="dz-icon me-0 btn btn-primary light">
                     <i class="fa-solid fa-video"></i>
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
 </header>
@@ -42,25 +42,8 @@
 <!-- Page Content Start -->
 <div class="page-content space-top p-b60 message-content" id="sectionChat">
     <div class="container"> 
-        <div class="chat-box-area chat-message"> 
-            {{-- <div class="chat-content">
-                <div class="message-item">
-                    <div class="bubble">Hi Richard , thanks for adding me</div>    
-                    <div class="message-time">08:35</div>    
-                </div>
-            </div>
-            <div class="chat-content user">
-                <div class="message-item">
-                    <div class="bubble">Hi Miselia , your welcome , nice to meet you too</div>    
-                    <div class="message-time">08:40</div>    
-                </div>
-            </div>
-            <div class="chat-content">
-                <div class="message-item">
-                    <div class="bubble">I look you're singer, can you sing for me</div>    
-                    <div class="message-time">9:44 AM</div>    
-                </div>
-            </div> --}}
+        <div class="chat-box-area chat-message{{ $data['key_chat'] }}" id="{{ $data['key_chat'] }}"> 
+            {{-- this area for a message --}}
         </div>
     </div> 
 </div>
@@ -87,4 +70,5 @@
 @stop
 <script>var idp_owner = "{{ $data['owner_info']['id'] }}";</script>
 <script>var my_id = "{{ $data['user_session']['id'] }}";</script>
+<script>var key_chat = "{{ $data['key_chat'] }}";</script>
 @endsection
