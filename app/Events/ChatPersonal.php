@@ -12,7 +12,9 @@ class ChatPersonal implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    public $from_user;
+    public $to_user;
+    public $key_chat;
     public $message;
 
     /**
@@ -20,9 +22,11 @@ class ChatPersonal implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($user, $message)
+    public function __construct($from, $to, $key_chat, $message)
     {
-        $this->user = $user;
+        $this->from_user = $from;
+        $this->to_user = $to;
+        $this->key_chat = $key_chat;
         $this->message  = $message;
     }
 
