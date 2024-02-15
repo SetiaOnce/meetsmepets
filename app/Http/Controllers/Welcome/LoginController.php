@@ -40,6 +40,7 @@ class LoginController extends Controller
             'thumb' => $getSiteInfo->randomThumb_url,
             'app_version' => config('app.version'),
             'app_name' => $getSiteInfo->name,
+            'siteInfo' => $getSiteInfo,
         );
         return view('welcome.login', compact('data'));
     }
