@@ -23,14 +23,14 @@
                 <div class="col-4">
                     <div class="card style-2">
                         <div class="card-body">
-                            <a href="javascript:void(0);" data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">	
+                            <a href="javascript:void(0);" >	
                                 <div class="card-icon">
                                     <i class="flaticon flaticon-star-1"></i>
                                 </div>
                                 <div class="card-content">
-                                    <p>0 Super Likes</p>
+                                    <p>{{ $data['superLike'] }} Super Likes</p>
                                 </div>
-                                <i class="icon feather icon-plus"></i>
+                                {{-- <i class="icon feather icon-plus"></i> --}}
                             </a>
                         </div>
                     </div>
@@ -50,8 +50,19 @@
                 </div>
                 <div class="col-4">
                     <div class="card style-2">
-                        <div class="card-body">
-                            <a href="javascript:void(0);">
+                        <div class="card-body statusSubscribe">
+                            @if ($data['subscribe'] == 'Y')
+                            <a href="javascript:void(0);" onclick="_updateSubscribe('N')">
+                                <div class="card-icon">
+                                    <i class="flaticon flaticon-bell"></i>
+                                </div>
+                                <div class="card-content">
+                                    <p>Subscriptions</p>
+                                </div>
+                                <i class="icon fa fa-check text-success"></i>
+                            </a>
+                            @else
+                            <a href="javascript:void(0);" onclick="_updateSubscribe('Y')">
                                 <div class="card-icon">
                                     <i class="flaticon flaticon-bell"></i>
                                 </div>
@@ -60,6 +71,7 @@
                                 </div>
                                 <i class="icon feather icon-plus"></i>
                             </a>
+                            @endif	
                         </div>
                     </div>
                 </div>
