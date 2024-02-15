@@ -14,4 +14,5 @@ class Owners extends Authenticatable
     public $table = 'owners';
 
     protected $guarded = ['id'];
+
 }
