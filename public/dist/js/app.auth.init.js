@@ -13,7 +13,7 @@ const _loadSystemInfo = () => {
             $('#kt_body').attr('style', `background-size: cover; background-position: unset; background-image: linear-gradient(0deg, rgb(7 0 40), #16246dcc), url(` +siteInfo.login_bg_url+ `);`),
 			$('#aside-auth').html(`<div class="d-flex flex-center flex-lg-center flex-column">
 				<h1 class="text-white fs-2qx fw-bolder text-center mb-0 mb-lg-3">
-				Lorem Ipsum is simply dummy text of the printing.
+				`+siteInfo.login_desc+`
 				</h1>
 				<h2 class="text-white fw-bold fs-3qx m-0 text-center"> 
 					<span style="color:#96E9C6;">MEETS</span>ME
