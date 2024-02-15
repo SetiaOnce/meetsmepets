@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
+use App\Models\LikePets;
 use App\Models\Owners;
 use App\Models\Pets;
 use App\Models\PetsAlbum;
 use App\Models\SiteInfo;
+use App\Models\Subscribers;
+use App\Models\SuperLike;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,13 +26,16 @@ class ProfileOwnerController extends Controller
     {
         $getSiteInfo = SiteInfo::whereId(1)->first();
         $getUserSession = Auth::guard('owner')->user();
+        $statusSub = Subscribers::whereEmail($getSiteInfo->email)->first();
         //Data WebInfo
         $data = array(
             'title' => 'Profile',
             'url' => url()->current(),
             'app_version' => config('app.version'),
             'app_name' => $getSiteInfo->short_name,
-            'user_session' => $getUserSession
+            'user_session' => $getUserSession,
+            'subscribe' => ($statusSub == null)? 'Y' : 'N',
+            'superLike' => SuperLike::whereFidOwner($getUserSession->id)->count(),
         );
         //Data Source CSS
         $data['css'] = array(
@@ -119,6 +125,32 @@ class ProfileOwnerController extends Controller
             'scripts/frontend/profile_edit.init.js',
         );
         return view('frontend.profile_edit', compact('data'));
+    }
+    public function updateSubscribe(Request $request)
+    {
+        $user = Auth::guard('owner')->user();  
+        DB::beginTransaction();
+        try {
+            if ($request->sub_status == 'Y') {
+                $statusSub = Subscribers::whereEmail($user->email)->first();
+                if(empty($statusSub)){
+                    Subscribers::insertGetId([
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'created_at' => Carbon::now(),
+                    ]);
+                }
+            }else{
+                Subscribers::whereEmail($user->email)->delete();
+            }
+            DB::commit();
+            return Shortcut::jsonResponse(true, 'Subscribe or unsubscribe successfully', 200);
+        } catch (Exception $exception) {
+            DB::rollBack();
+            return Shortcut::jsonResponse(false, $exception->getMessage(), 401, [
+                "Trace" => $exception->getTrace()
+            ]);
+        }
     }
     public function saveUsername(Request $request)
     {
@@ -632,6 +664,7 @@ class ProfileOwnerController extends Controller
             if(file_exists($get_image6) && $getRow->image6)
                 unlink($get_image6);
         }
+        LikePets::whereFidPets($idp)->delete();
         Pets::whereId($idp)->delete();
         return Shortcut::jsonResponse(true, 'Delete pet successfully', 200);
     }
