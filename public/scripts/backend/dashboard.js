@@ -13,7 +13,7 @@ const _loadWidget01 = () => {
         dataType: 'JSON',
         success: function (data) {
             let userInfo = data.userProfle,
-                // counter = data.counter,
+                counter = data.counter,
                 userInfoContent = `<div class="d-flex flex-center flex-column py-5 mb-3">
                     <a href="` +userInfo.thumb_url+ `" class="image-popup" title="` +userInfo.name+ `">
                         <div class="symbol symbol-100px symbol-circle mb-7">
@@ -42,16 +42,16 @@ const _loadWidget01 = () => {
                     </div>
                 </div>`;
             $('#card-userInfo .card-body').html(userInfoContent);
-            // let optionsCount = {
-            //     useEasing: false,
-            //     useGrouping: false,
-            // };
-            // let countPegawaiAsn = new countUp.CountUp('countPegawaiAsn', counter.pegawai_asn, optionsCount);
-            // countPegawaiAsn.start();
-            // let countPegawaiHonorer = new countUp.CountUp('countPegawaiHonorer', counter.pegawai_honorer, optionsCount);
-            // countPegawaiHonorer.start();
-            // let countPegawaiPengelola = new countUp.CountUp('countPegawaiPengelola', counter.pegawai_pengelola, optionsCount);
-            // countPegawaiPengelola.start();
+            let optionsCount = {
+                useEasing: false,
+                useGrouping: false,
+            };
+            let countUsers = new countUp.CountUp('countUsers', counter.users, optionsCount);
+            countUsers.start();
+            let countPets = new countUp.CountUp('countHewanPeliharaan', counter.pets, optionsCount);
+            countPets.start();
+            let countSubscribers = new countUp.CountUp('countSubscribers', counter.subcribers, optionsCount);
+            countSubscribers.start();
         }, complete: function(data) {
             $('.image-popup').magnificPopup({
                 type: 'image', closeOnContentClick: true, closeBtnInside: false, fixedContentPos: true,
