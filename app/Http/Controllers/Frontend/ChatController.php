@@ -157,41 +157,62 @@ class ChatController extends Controller
     public function allMessage()
     {
         $iduserSesIdp = Auth::guard('owner')->user()->id;  
-        $getRow = Chat::select(
-            'owners.id',
-            'owners.name',
-            'owners.thumb',
-            'owners.last_login',
-            'chats.from',
-            'chats.to',
-            'chats.message',
-            'chats.created_at',
-        )
-        ->orderBy('chats.created_at', 'DESC')
-        ->join('owners', function ($join) use ($iduserSesIdp) {
-            $join->on('owners.id', '=', 'chats.to')
-                 ->where('owners.id', '!=', $iduserSesIdp)
-                 ->orWhere('chats.from', '=', $iduserSesIdp);
-        })
-        ->where(function ($query) use ($iduserSesIdp) {
-            $query->where('chats.from', '=', $iduserSesIdp)
-                  ->orWhere('chats.to', '=', $iduserSesIdp);
-        })
-        ->whereNot('owners.id', $iduserSesIdp)
-        ->where('owners.is_active', 'Y')
-        ->groupBy('owners.id')
+
+        $incomingChats = Chat::where('from', $iduserSesIdp)
+        ->orderBy('created_at', 'desc')
         ->get();
-        
-        $allMessage = [];
-        foreach($getRow as $row){
-            $file_name = $row->thumb;
-            $statusRead = $row->is_read;
-            // if ($row->from != $iduserSesIdp) {
-            //     $user = Owners::whereId($row->from)->first();
-            //     $file_name = $user->thumb;
-            //     $row->name = $user->name;
-            //     $statusRead = 'N';
-            // }
+        $outgoingChats = Chat::where('to', $iduserSesIdp)
+        ->orderBy('created_at', 'desc')
+        ->get();
+        $allChats = $incomingChats->merge($outgoingChats)->sortByDesc('created_at');
+        $groupedData = [];
+        // grouping the key chat
+        foreach ($allChats as $item) {
+            $keyChat = $item['key_chat'];
+            if (!isset($groupedData[$keyChat])) {
+                $groupedData[$keyChat] = [];
+            }
+            $groupedData[$keyChat][] = $item;
+        }
+        // getting the key chat
+        $keyChats = [];      
+        foreach ($groupedData as $keyChat => $chat) {
+            $keyChats[] = $keyChat;
+        }
+        // getting the newer chat
+        $filterChats = [];
+        foreach($keyChats as $key){
+            $chat = Chat::whereKeyChat($key)->orderByDesc('id')->first();
+            $chatNotRead = Chat::whereKeyChat($key)->whereTo($iduserSesIdp)->whereIsRead('N')->count();
+            $statusRead = $chat->is_read;
+
+            // Tentukan apakah pesan ini adalah pesan yang Anda kirimkan atau yang Anda terima
+            if($chat->from == $iduserSesIdp){
+                $receiver = Owners::find($chat->to);
+                $isSentByYou = 'Y';
+                $file_name = $receiver->thumb;
+                // status login
+                if($receiver->last_login < time() - (2 * 60)){
+                    $statusActive = 'Y';
+                }else{
+                    $statusActive = 'N';
+                }
+                $idp = $receiver->id;
+                $name = $receiver->name;
+            }else{
+                $sender = Owners::find($chat->from);
+                $isSentByYou = 'N';
+                $file_name = $sender->thumb;
+                // status login
+                if($sender->last_login < time() - (2 * 60)){
+                    $statusActive = 'Y';
+                }else{
+                    $statusActive = 'N';
+                }
+                $idp = $sender->id;
+                $name = $sender->name;
+            }
+
             if($file_name==''){
                 $thumb_url = asset('dist/img/default-user-img.jpg');
             } else {
@@ -201,23 +222,21 @@ class ChatController extends Controller
                     $thumb_url = url('dist/img/users-img/'.$file_name);
                 }
             }
-            // status login
-            if($row->last_login < time() - (2 * 60)){
-                $statusActive = 'Y';
-            }else{
-                $statusActive = 'N';
-            }
-            $allMessage[] = [
-                'id' => $row->id,
-                'name' => $row->name,
+
+            $filterChats[] = [
+                'id' => $idp,
+                'name' => $name,
+                'is_sendby_you' => $isSentByYou,
                 'thumb_url' => $thumb_url,
-                'message' => Str::limit($row->message, 20),
-                'last_chat' => Shortcut::timeago($row->created_at),
+                'message' => Str::limit($chat->message, 20),
+                'last_chat' => Shortcut::timeago($chat->created_at),
                 'is_active' => $statusActive,
                 'is_read' => $statusRead,
+                'chat_notread' => $chatNotRead,
             ];
         }
-        return Shortcut::jsonResponse(true, 'Success', 200, $allMessage);
+        // dd($filterChats);
+        return Shortcut::jsonResponse(true, 'Success', 200, $filterChats);
     }
     public function personalChat(Request $request)
     {
@@ -235,6 +254,9 @@ class ChatController extends Controller
         ->get();
         $personalMessage = [];
         foreach($getRow as $row){
+            Chat::whereKeyChat($row->key_chat)->whereTo($iduserSesIdp)->update([
+                'is_read' => 'Y'
+            ]);
             $isMe = '';
             if($row->from == $iduserSesIdp){
                 $isMe = 'user';
