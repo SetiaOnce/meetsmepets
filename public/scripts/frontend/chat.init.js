@@ -58,12 +58,19 @@ const _loadAllMessage = () => {
                     }
                     // status read
                     var statusRead = '';
-                    if(row.is_read == 'Y'){
-                        statusRead = `<div class="seen-btn dz-flex-box ">
-                            <i class="icon feather icon-check text-success"></i>
-                        </div>`;
+                    if(row.is_sendby_you == 'Y'){
+                        if(row.is_read == 'Y'){
+                            statusRead = `<i class="icon bi bi-check-all text-info me-1"></i>`;
+                        }else{
+                            statusRead = '<i class="icon bi bi-check-all me-1"></i>';
+                        }
+                    }
+                    // message not read
+                    var chat_notread = '';
+                    if(row.chat_notread != 0){
+                        chat_notread = `<span class="badge light badge-success ">`+row.chat_notread +`</span>`;
                     }else{
-                        statusRead = '';
+                        chat_notread = '';
                     }
                     contentAllMessage += `<li class="`+statusActive+`">
                     <a href="`+base_url+`chat/`+row.id+`">
@@ -72,12 +79,12 @@ const _loadAllMessage = () => {
                         </div>
                         <div class="media-content">
                             <div>
-                                <h6 class="name">`+row.name+`</h6>
-                                <p class="last-msg">`+row.message+`</p>
+                                <h6 class="name align-middle">`+row.name+`
+                                <p class="last-msg">`+statusRead+``+row.message+`</p>
                             </div>
-                            <div class="right-content">
+                            <div class="right-content justify-content-end">
                                 <span class="date">`+row.last_chat+`</span>
-                                `+statusRead+`
+                                `+chat_notread+`
                             </div>
                         </div>
                     </a>
@@ -111,7 +118,7 @@ const realtimeChat = () => {
     });
     var channel2 = pusher.subscribe('chat-personal');
     channel2.bind('App\\Events\\ChatPersonal', function(data) {
-        if(data.from_user == parseFloat(my_id)){
+        if(data.to_user == parseFloat(my_id)){
             _loadAllMessage();
         }
     });
