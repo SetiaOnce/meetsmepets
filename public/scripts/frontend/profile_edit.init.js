@@ -277,6 +277,7 @@ const _editPet = (idp) => {
         },success: function (data) {
             console.log(data);
             $('[name="id"]').val(data.row.id);
+            $('#pet_name').val(data.row.pet_name);
             $('#category').selectpicker('val', data.row.category);
             $('#breed').val(data.row.breed);
             if(data.row != null){
@@ -320,8 +321,14 @@ const _addPets = () => {
 $("#btn-savePets").on("click", function (e) {
     e.preventDefault();
     $('#btn-savePets').html('Please Wait...').attr('disabled', true);
-    let category = $("#category"), breed = $("#breed");
+    let pet_name = $('#pet_name'), category = $("#category"), breed = $("#breed");
 
+    if (pet_name.val() == "") {
+        toastr.error('Enter the pet name', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+        pet_name.focus();
+        $("#btn-savePets").html('<i class="las la-save align-center me-2"></i> Save').attr("disabled", false);
+        return false;
+    }
     if (category.val() == "") {
         toastr.error('Select the pets category', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
         category.focus();
