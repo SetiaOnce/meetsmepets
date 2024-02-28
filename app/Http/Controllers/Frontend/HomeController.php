@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Helpers\Shortcut;
 use App\Http\Controllers\Controller;
 use App\Models\Owners;
+use App\Models\Pets;
 use App\Models\SiteInfo;
 use App\Models\SuperLike;
 use Illuminate\Http\Request;
@@ -55,25 +56,35 @@ class HomeController extends Controller
             $lat =Auth::guard('owner')->user()->lat;
             $lng =Auth::guard('owner')->user()->lng;  
         }
-        $getRow =  Owners::whereNot('id', $iduserSesIdp)->whereIsActive('Y')->get();
+        // $getRow =  Owners::whereNot('id', $iduserSesIdp)->whereIsActive('Y')->get();
+        $getRow = Pets::select(
+            'pets.*',
+            'owners.id as fid_owner',
+            'owners.lat',
+            'owners.lng',
+        )
+        ->join('owners', 'owners.id', '=', 'pets.fid_owner')
+        ->where('owners.is_active', 'Y')
+        ->get();
         $dataNearby = [];
         foreach ($getRow as $item) {
             $distance = $this->haversineDistance($lat, $lng, $item->lat, $item->lng);
             if ($distance <= $maxDistance) {
-                $file_name = $item->thumb;
+                $file_name = $item->image1;
                 if($file_name==''){
                     $thumb_url = asset('dist/img/default-user-img.jpg');
                 } else {
-                    if (!file_exists(public_path(). '/dist/img/users-img/'.$file_name)){
+                    if (!file_exists(public_path(). '/dist/img/pets-img/'.$file_name)){
                         $thumb_url = asset('dist/img/default-user-img.jpg');
                     }else{
-                        $thumb_url = url('dist/img/users-img/'.$file_name);
+                        $thumb_url = url('dist/img/pets-img/'.$file_name);
                     }
                 }
-                $statusLike = SuperLike::whereFidOwner($item->id)->whereLikeBy($iduserSesIdp)->first();
+                $statusLike = SuperLike::whereFidOwner($item->fid_owner)->whereLikeBy($iduserSesIdp)->first();
                 $dataNearby[] = [
-                    'id' => $item->id,
-                    'name' => $item->name,
+                    'id' => $item->fid_owner,
+                    'name' => $item->category,
+                    'breed' => $item->breed,
                     'distance' => number_format($distance, 2),
                     'thumb_url' => $thumb_url,
                     'has_like' => ($statusLike == null)? 'N' : 'Y'
