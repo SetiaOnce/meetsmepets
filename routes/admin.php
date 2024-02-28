@@ -5,6 +5,7 @@ use App\Http\Controllers\Backend\DashboardController;
 use App\Http\Controllers\Backend\MasterCategoryController;
 use App\Http\Controllers\Backend\MasterInterestController;
 use App\Http\Controllers\Backend\UserProfilesController;
+use App\Http\Controllers\Backend\UsersPublicController;
 use App\Http\Controllers\Backend\UsersSystemController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,6 +14,7 @@ Route::get('/site_information', [WebsitesInfomationController::class, 'index']);
 // App Admin
 Route::group(['prefix' => 'app_admin'], function () {
     Route::get('/manage_users', [UsersSystemController::class,'index'])->name('manage_users');
+    Route::get('/users_public', [UsersPublicController::class,'index'])->name('users_public');
     Route::get('/{username}', [UserProfilesController::class,'index'])->name('user_profile');
 });
 // Mastering
@@ -41,6 +43,10 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/manage_users/update', [UsersSystemController::class, 'update'])->name('update_users');
     Route::post('/manage_users/update_statususers', [UsersSystemController::class, 'update_statususers'])->name('update_statususers');
     Route::post('/manage_users/reset_userpass', [UsersSystemController::class, 'reset_userpass'])->name('reset_userpass');
+     //Manage Users Public
+     Route::get('/manage_userspublic/show', [UsersPublicController::class, 'show'])->name('show_userspublic');
+    Route::post('/manage_userspublic/update_status', [UsersPublicController::class, 'update_status'])->name('update_statususerspublic');
+
     // master category
     Route::controller(MasterCategoryController::class)->group(function () {
         Route::group(['prefix' => 'master_category'], function () {
