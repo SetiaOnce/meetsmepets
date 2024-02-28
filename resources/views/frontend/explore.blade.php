@@ -41,12 +41,10 @@
 					</div>
 				</div>
 			</div>
+			<div class="row col-12 mb-2 mt-2 btn-viewmore" style="display: none;">
+				<a href="javascript:void(0);" onclick="viewMore()" class="btn btn-sm btn-info w-50 dz-flex-box rounded-xl"><i class="fa fa-plus me-2 align-middle" aria-hidden="true"></i>View More</a>
+			</div>
 		</div>
 	</div>
 	<!-- Page Content End -->
-    <div class="footer fixed" style="padding-bottom: 15%;">
-		<div class="container text-right btn-viewmore" style="display: none;">
-			<a href="javascript:void(0);" onclick="viewMore()" class="btn btn-sm btn-info w-50 dz-flex-box rounded-xl"><i class="fa fa-plus me-2 align-middle" aria-hidden="true"></i>View More</a>
-		</div>
-	</div>
 @endsection
