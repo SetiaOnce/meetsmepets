@@ -83,7 +83,8 @@ class HomeController extends Controller
                 $statusLike = SuperLike::whereFidOwner($item->fid_owner)->whereLikeBy($iduserSesIdp)->first();
                 $dataNearby[] = [
                     'id' => $item->fid_owner,
-                    'name' => $item->category,
+                    'pet_name' => $item->pet_name,
+                    'category' => $item->category,
                     'breed' => $item->breed,
                     'distance' => number_format($distance, 2),
                     'thumb_url' => $thumb_url,
