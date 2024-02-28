@@ -31,7 +31,7 @@ const loadNearOwner = () => {
                         <div class="dz-content">
                             <div class="left-content">
                                 <span class="badge badge-primary d-inline-flex gap-1 mb-2"><i class="icon feather icon-map-pin"></i>Nearby</span>
-                                <h4 class="title"><a href="profile-detail.html">`+row.name+`</a></h4>
+                                <h4 class="title"><a href="profile-detail.html">`+row.name+` <br><span class="about" style="font-size:12px; color:#D7E4C0;">`+row.breed+`</span></a></h4>
                                 <p class="mb-0"><i class="icon feather icon-map-pin"></i> `+row.distance+` kilometers away</p>
                             </div>
                             <div class="statusLikeIcon`+row.id+`">
