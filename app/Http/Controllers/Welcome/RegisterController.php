@@ -51,8 +51,8 @@ class RegisterController extends Controller
         try {
             $user = Owners::where('username', $request->username)->first();
             if($user) {
-                Shortcut::addToLog('First step register failed, email username exist on system !');
-                return Shortcut::jsonResponse(false, 'Data cannot be prosses, email username exists', 200);
+                Shortcut::addToLog('First step register failed, username exist on system !');
+                return Shortcut::jsonResponse(false, 'Data cannot be prosses, username exists', 200);
             }else{
                 $user = Owners::where('email', $request->email)->first();
                 if($user) {
@@ -68,8 +68,10 @@ class RegisterController extends Controller
             }
             $output = [
                 'username' => $request->username,
+                'name' => $request->name,
                 'email' => $request->email,
                 'phone_number' => $request->phone_number,
+                'gender' => $request->gender,
             ];
             Shortcut::addToLog('First step register was successful');
             return Shortcut::jsonResponse(true, 'Success', 200, $output);
@@ -91,10 +93,11 @@ class RegisterController extends Controller
             $password = $request->confirm_2.$request->confirm_3.$request->confirm_4.$request->confirm_5;
             //array data
             $data = array(
-                'name' => $request->hideUsername,
+                'name' => $request->hideName,
                 'username' => $request->hideUsername,
                 'email' => $request->hideMail,
                 'phone_number' => $request->hidePhoneNumber,
+                'gender' => $request->hideGender,
                 'is_active' => 'Y',
                 'password' => bcrypt($password),
                 'thumb' => '-',
