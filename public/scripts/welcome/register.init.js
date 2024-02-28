@@ -5,13 +5,18 @@ var SetUpPassword;
 var KTRegister = function() {
 	//Register Handle 1
 	var _handleRegister1Form = function() {
-		$('#username').focus();
+		$('#name').focus();
 		// Handle submit button
 		$('#btn-register1').on('click', function (e) {
 			e.preventDefault();
 			$('#btn-register1').html('Please Wait...').attr('disabled', true);
-			let username = $('#username'), email = $('#email'), phone_number = $('#phone_number');
-			if (username.val() == '') {
+			let name = $('#name'), username = $('#username'), email = $('#email'), phone_number = $('#phone_number');
+			if (name.val() == '') {
+				toastr.error('Full name is mandatory..', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
+				name.focus();
+				$('#btn-register1').html('Next').attr('disabled', false);
+				return false;
+			}if (username.val() == '') {
 				toastr.error('Username is mandatory..', 'Uuppss!', {"progressBar": true, "timeOut": 1500});
 				username.focus();
 				$('#btn-register1').html('Next').attr('disabled', false);
@@ -44,9 +49,11 @@ var KTRegister = function() {
 				success: function (data) {
 					$('#btn-register1').html('Next').attr('disabled', false);
 					if (data.status==true){
+						$('[name="hideName"]').val(data.row.name),
 						$('[name="hideUsername"]').val(data.row.username),
 						$('[name="hideMail"]').val(data.row.email),
 						$('[name="hidePhoneNumber"]').val(data.row.phone_number),
+						$('[name="hideGender"]').val(data.row.gender),
                         $('#firstStep').hide(),
                         $('#secondStep').addClass('loginAnimated-fadeInRight').show(),
                         $('#digit_2').focus();
