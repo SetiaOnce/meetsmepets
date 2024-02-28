@@ -51,6 +51,7 @@ class ExploreController extends Controller
 
         $getRow = Pets::select(
             'pets.id',
+            'pets.pet_name',
             'pets.category',
             'pets.breed',
             'pets.image1',
@@ -83,6 +84,7 @@ class ExploreController extends Controller
             }
             $data[] = [
                 'id' => $row->id,
+                'pet_name' => $row->pet_name,
                 'category' => $row->category,
                 'breed' => $row->breed,
                 'name' => $row->name,
