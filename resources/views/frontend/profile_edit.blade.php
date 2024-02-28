@@ -83,6 +83,9 @@
                 <form class="form" id="form-pets">
                     <input type="hidden" name="id"/><input type="hidden" name="method_formdata"/>
                     <div class="form-group mb-2">
+                        <input type="text" name="pet_name" id="pet_name" class="form-control" placeholder="Pet name ...">
+                    </div>
+                    <div class="form-group mb-2">
                         <select class="form-control selectpicker form-control-solid mb-3 mb-lg-0" id="category" name="category" data-placeholder="Select category ..."></select>
                     </div>
                     <div class="form-group mb-2">
