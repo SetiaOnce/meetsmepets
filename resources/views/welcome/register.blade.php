@@ -30,6 +30,9 @@
                     <div class="card-body">
                         <form class="form" id="form-first">
                             <div class="mb-2 input-group input-group-icon">
+                                <input type="text" class="form-control" name="name" id="name" placeholder="Enter Full Name">								
+                            </div>
+                            <div class="mb-2 input-group input-group-icon">
                                 <span class="input-group-text">
                                     <div class="input-icon">
                                         <i class="icon feather icon-user"></i>
@@ -52,6 +55,37 @@
                                     </div>
                                 </span>
                                 <input type="email" class="form-control" name="phone_number" id="phone_number" placeholder="Enter Phone Number">
+                            </div>
+                            <div class="radio style-2">
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4">
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" value="WOMEN">
+                                            <span class="checkmark">						
+                                                <span class="text">Women</span>
+                                                <span class="check"></span>							
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" value="MEN">
+                                            <span class="checkmark">
+                                                <span class="text">Men</span>
+                                                <span class="check"></span>							
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="radio-label">
+                                            <input type="radio" name="gender" checked value="OTHER">
+                                            <span class="checkmark">
+                                                <span class="text">Other</span>	
+                                                <span class="check"></span>							
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -115,9 +149,11 @@
                     <h3>Confirm Your Pin</h3>
                 </div>
                 <form class="form" id="form-third">
+                    <input type="hidden" name="hideName">
                     <input type="hidden" name="hideUsername">
                     <input type="hidden" name="hideMail">
                     <input type="hidden" name="hidePhoneNumber">
+                    <input type="hidden" name="hideGener">
                     <div id="otp" class="digit-group input-mini">
                         <input class="form-control" type="password" id="confirm_2" name="confirm_2" data-next="confirm_3" data-previous="confirm-1">
                         <input class="form-control" type="password" id="confirm_3" name="confirm_3" data-next="confirm_4" data-previous="confirm_2">
