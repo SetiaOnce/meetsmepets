@@ -420,6 +420,7 @@ class ProfileOwnerController extends Controller
         $errors					= [];
         DB::beginTransaction();
         $validator = Validator::make($request->all(), [
+            'pet_name' => 'required|max:120',
             'category' => 'required',
             'breed' => 'required|max:100',
             'imageUpload' => 'mimes:png,jpg,jpeg|max:2048',
@@ -451,6 +452,7 @@ class ProfileOwnerController extends Controller
             try {
                 $destinationPath = public_path('/dist/img/pets-img');
                 $data = [
+                    'pet_name' => strtoupper($request->pet_name),
                     'category' => $request->category,
                     'breed' => strtoupper($request->breed),
                     'fid_owner' => $userSesIdp,
@@ -524,6 +526,7 @@ class ProfileOwnerController extends Controller
         $errors					= [];
         DB::beginTransaction();
         $validator = Validator::make($request->all(), [
+            'pet_name' => 'required|max:120',
             'category' => 'required',
             'breed' => 'required|max:100',
             'imageUpload' => 'mimes:png,jpg,jpeg|max:2048',
@@ -556,6 +559,7 @@ class ProfileOwnerController extends Controller
             try {
                 $destinationPath = public_path('/dist/img/pets-img');
                 $data = [
+                    'pet_name' => strtoupper($request->pet_name),
                     'category' => $request->category,
                     'breed' => strtoupper($request->breed),
                     'updated_at' => Carbon::now()
