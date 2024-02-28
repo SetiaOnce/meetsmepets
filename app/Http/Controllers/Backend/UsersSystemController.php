@@ -26,7 +26,7 @@ class UsersSystemController extends Controller
         $getUserSession = Auth::guard('web')->user();
         //Data WebInfo
         $data = array(
-            'title' => 'Kelola Data User',
+            'title' => 'Kelola Data User System',
             'url' => url()->current(),
             'app_version' => config('app.version'),
             'app_name' => $getSiteInfo->name,
