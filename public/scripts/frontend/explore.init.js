@@ -39,8 +39,8 @@ function _loadExplorePets(page) {
                         <img src="`+row.image_url+`" alt="">
                     </div>
                     <div class="dz-content">
-                        <h6 class="title">`+row.category+`</h6>	
-                        <span class="about">`+row.breed+`</span>	
+                        <h6 class="title">`+row.pet_name+`</h6>	
+                        <span class="about">`+row.category+` - `+row.breed+`</span>	
                     </div>
                 </a>
             </div>
