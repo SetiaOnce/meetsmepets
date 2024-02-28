@@ -74,7 +74,17 @@
                             <span class="menu-icon">
                                 <i class="bi bi-people fs-1"></i>
                             </span>
-                            <span class="menu-title">USERS</span>
+                            <span class="menu-title">USERS SYSTEM</span>
+                        </a>
+                    </div>
+                    <!--begin:Menu item-->
+                    <!--begin:Menu item-->
+                    <div class="menu-item">
+                        <a class="menu-link {{ strtolower($activeMenu) == strtolower('USERS_PUBLIC') ? 'active' : '' }}" href="{{ url('/app_admin/users_public') }}">
+                            <span class="menu-icon">
+                                <i class="bi bi-people fs-1"></i>
+                            </span>
+                            <span class="menu-title">USERS PUBLIC</span>
                         </a>
                     </div>
                     <!--begin:Menu item-->
